@@ -1,4 +1,3 @@
-from app import models
 from flask import Flask
 from config import Config
 from app.extensions import db, login_manager
@@ -16,8 +15,12 @@ def create_app():
 
     from app import models
 
+    # Import Blueprints
     from app.routes.auth import auth_bp
+    from app.routes.dashboard import dashboard_bp
 
+    # Register Blueprints
     app.register_blueprint(auth_bp)
+    app.register_blueprint(dashboard_bp)
 
     return app

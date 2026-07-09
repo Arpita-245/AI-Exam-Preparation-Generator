@@ -71,7 +71,7 @@ def login():
 
             flash("Login Successful!")
 
-            return redirect(url_for("auth.dashboard"))
+            return redirect(url_for("dashboard.dashboard"))
 
         flash("Invalid Email or Password")
 
@@ -81,10 +81,7 @@ def login():
 
 # ---------------- Dashboard ---------------- #
 
-@auth_bp.route("/dashboard")
-@login_required
-def dashboard():
-    return render_template("dashboard.html")
+
 
 @auth_bp.route("/logout")
 @login_required

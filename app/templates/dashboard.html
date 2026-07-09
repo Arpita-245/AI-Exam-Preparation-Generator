@@ -1,15 +1,58 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
 </head>
+
 <body>
 
-<h1>Welcome to AI-Based Exam Preparation System</h1>
+    <h1>🎓 AI-Based Exam Preparation System</h1>
 
-<p>You are successfully logged in.</p>
+    <hr>
 
-<a href="/logout">Logout</a>
+    <h2>Welcome, {{ user.full_name }} 👋</h2>
+
+    <hr>
+
+    <h3>Dashboard Statistics</h3>
+
+    <table border="1" cellpadding="10">
+
+        <tr>
+            <th>Uploaded Notes</th>
+            <th>Quizzes Taken</th>
+            <th>Average Score</th>
+            <th>Subjects</th>
+        </tr>
+
+        <tr>
+            <td>{{ stats.notes }}</td>
+            <td>{{ stats.quizzes }}</td>
+            <td>{{ stats.average }}%</td>
+            <td>{{ stats.subjects }}</td>
+        </tr>
+
+    </table>
+
+    <br>
+
+    <h3>Quick Actions</h3>
+
+    <ul>
+
+        <li><a href="/upload">📤 Upload Notes</a></li>
+
+        <li><a href="/generate-quiz">🤖 Generate Quiz</a></li>
+
+        <li><a href="/results">📊 View Results</a></li>
+
+        <li><a href="/logout">🚪 Logout</a></li>
+
+    </ul>
 
 </body>
+
 </html>
