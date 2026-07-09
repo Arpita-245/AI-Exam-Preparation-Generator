@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My Notes</title>
+</head>
+
+<body>
+
+    <h2>📚 My Uploaded Notes</h2>
+
+    {% if notes %}
+
+        {% for note in notes %}
+
+            <hr>
+
+            <h3>{{ note.original_filename }}</h3>
+
+            <p>
+                {{ note.extracted_text[:500] }}
+            </p>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No notes uploaded yet.</p>
+
+    {% endif %}
+
+    <br>
+
+    <a href="{{ url_for('dashboard.dashboard') }}">
+        Back to Dashboard
+    </a>
+
+</body>
+
+</html>

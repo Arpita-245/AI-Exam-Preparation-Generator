@@ -43,13 +43,35 @@
 
     <ul>
 
-        <li><a href="/upload">📤 Upload Notes</a></li>
+        <li>
+            <a href="{{ url_for('upload.upload') }}">
+                📤 Upload Notes
+            </a>
+        </li>
 
-        <li><a href="/generate-quiz">🤖 Generate Quiz</a></li>
+        <li>
+            <a href="{{ url_for('notes.notes') }}">
+                📚 My Notes
+            </a>
+        </li>
 
-        <li><a href="/results">📊 View Results</a></li>
+        <li>
+            <a href="/generate-quiz">
+                🤖 Generate Quiz
+            </a>
+        </li>
 
-        <li><a href="/logout">🚪 Logout</a></li>
+        <li>
+            <a href="/results">
+                📊 View Results
+            </a>
+        </li>
+
+        <li>
+            <a href="{{ url_for('auth.logout') }}">
+                🚪 Logout
+            </a>
+        </li>
 
     </ul>
 
