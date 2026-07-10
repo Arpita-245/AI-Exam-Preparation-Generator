@@ -1,19 +1,47 @@
-function Card({ icon, title, description }) {
-  return (
-    <div className="bg-white rounded-2xl shadow-lg p-8 hover:shadow-xl transition duration-300">
-      <div className="text-blue-600 text-5xl mb-5">
-        {icon}
-      </div>
+function Card({
 
-      <h3 className="text-2xl font-bold mb-3">
-        {title}
-      </h3>
+children,
 
-      <p className="text-gray-600 leading-7">
-        {description}
-      </p>
-    </div>
-  );
+className=""
+
+}){
+
+return(
+
+<div
+
+className={
+
+`bg-white
+
+rounded-2xl
+
+shadow-md
+
+hover:shadow-xl
+
+transition
+
+duration-300
+
+border
+
+border-gray-200
+
+p-6
+
+${className}`
+
+}
+
+>
+
+{children}
+
+</div>
+
+);
+
 }
 
 export default Card;
