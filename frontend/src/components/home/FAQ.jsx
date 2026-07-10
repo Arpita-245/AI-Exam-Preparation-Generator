@@ -1,30 +1,31 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { FaPlus, FaMinus } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
+
+const faqs = [
+  {
+    question: "How does the AI Question Generator work?",
+    answer:
+      "The AI analyzes your uploaded study material and automatically generates MCQs, subjective questions, and quizzes based on the content.",
+  },
+  {
+    question: "Which file formats can I upload?",
+    answer:
+      "You can upload PDF, DOCX, TXT, and images. The backend will extract the text before generating questions.",
+  },
+  {
+    question: "Can I attempt quizzes multiple times?",
+    answer:
+      "Yes. You can generate new quizzes and retake previous ones to improve your understanding.",
+  },
+  {
+    question: "Will my progress be saved?",
+    answer:
+      "Yes. After backend integration, your quiz history, scores, and uploaded notes will be securely stored in your account.",
+  },
+];
 
 function FAQ() {
-  const faqs = [
-    {
-      question: "What file formats can I upload?",
-      answer:
-        "You can upload PDF, DOCX, and TXT files for AI-based question generation.",
-    },
-    {
-      question: "Can I generate MCQs from my notes?",
-      answer:
-        "Yes. The application generates MCQs, short-answer, and long-answer questions based on your uploaded notes.",
-    },
-    {
-      question: "Can I take quizzes multiple times?",
-      answer:
-        "Yes. You can generate new quizzes and practice as many times as you want.",
-    },
-    {
-      question: "Will my quiz history be saved?",
-      answer:
-        "Yes. Once you log in, your quiz history and scores will be stored in your dashboard.",
-    },
-  ];
-
   const [activeIndex, setActiveIndex] = useState(null);
 
   const toggleFAQ = (index) => {
@@ -32,45 +33,65 @@ function FAQ() {
   };
 
   return (
-    <section className="py-24 bg-white">
+    <section id="faq" className="py-24 bg-white">
       <div className="max-w-4xl mx-auto px-6">
 
-        <h2 className="text-4xl font-bold text-center mb-4">
-          Frequently Asked Questions
-        </h2>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true }}
+          className="text-center mb-14"
+        >
+          <h2 className="text-5xl font-bold">
+            Frequently Asked Questions
+          </h2>
 
-        <p className="text-center text-gray-500 mb-12">
-          Find answers to the most common questions about ExamAI.
-        </p>
+          <p className="text-gray-600 mt-4 text-lg">
+            Find answers to the most common questions about ExamAI.
+          </p>
+        </motion.div>
 
-        <div className="space-y-4">
+        <div className="space-y-5">
+
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="border rounded-xl shadow-sm"
+              className="border border-gray-200 rounded-2xl overflow-hidden shadow-sm"
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full flex justify-between items-center p-5 text-left"
+                className="w-full flex justify-between items-center p-6 text-left hover:bg-gray-50 transition"
               >
-                <span className="font-semibold">
+                <span className="font-semibold text-lg">
                   {faq.question}
                 </span>
 
                 {activeIndex === index ? (
-                  <ChevronUp />
+                  <FaMinus className="text-blue-600" />
                 ) : (
-                  <ChevronDown />
+                  <FaPlus className="text-blue-600" />
                 )}
               </button>
 
-              {activeIndex === index && (
-                <div className="px-5 pb-5 text-gray-600">
-                  {faq.answer}
-                </div>
-              )}
+              <AnimatePresence>
+                {activeIndex === index && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="px-6 pb-6 text-gray-600 leading-7">
+                      {faq.answer}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
             </div>
           ))}
+
         </div>
 
       </div>
