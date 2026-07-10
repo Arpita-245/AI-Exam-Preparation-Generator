@@ -5,6 +5,8 @@ import HowItWorks from "../components/home/HowItWorks";
 import Statistics from "../components/home/Statistics";
 import Testimonials from "../components/home/Testimonials";
 import FAQ from "../components/home/FAQ";
+import CTA from "../components/home/CTA";
+import Footer from "../components/common/Footer";
 
 function Home() {
   return (
@@ -16,6 +18,8 @@ function Home() {
       <Statistics />
       <Testimonials />
       <FAQ />
+      <CTA />
+      <Footer />
     </>
   );
 }
