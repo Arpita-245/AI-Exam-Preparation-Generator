@@ -1,39 +1,52 @@
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import Button from "../common/Button";
 
 function CTA() {
   return (
-    <section className="bg-linear-to-r from-blue-600 to-indigo-700 py-24">
+    <section className="py-24 bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600">
+      <div className="max-w-5xl mx-auto px-6 text-center text-white">
 
-      <div className="max-w-4xl mx-auto text-center px-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.7 }}
+          viewport={{ once: true }}
+        >
+          <span className="inline-block px-4 py-2 bg-white/20 rounded-full text-sm font-semibold mb-6">
+            🚀 Start Your AI Learning Journey
+          </span>
 
-        <h2 className="text-5xl font-bold text-white mb-6">
-          Ready to Ace Your Exams?
-        </h2>
+          <h2 className="text-5xl font-bold leading-tight">
+            Ready to Prepare Smarter?
+          </h2>
 
-        <p className="text-blue-100 text-lg mb-10">
-          Upload your study notes, generate AI-powered
-          questions, practice quizzes and track your
-          learning progress.
-        </p>
+          <p className="mt-6 text-lg text-blue-100 max-w-2xl mx-auto">
+            Upload your notes, generate AI-powered questions, take quizzes,
+            and track your progress—all in one place.
+          </p>
 
-        <div className="flex flex-col sm:flex-row justify-center gap-6">
+          <div className="mt-10 flex flex-wrap justify-center gap-4">
 
-          <Link to="/signup">
-            <button className="bg-white text-blue-600 font-semibold px-8 py-3 rounded-lg hover:bg-gray-100 transition">
-              Get Started
-            </button>
-          </Link>
+            <Link to="/signup">
+              <Button className="bg-white text-blue-600 hover:bg-gray-100">
+                Create Free Account
+              </Button>
+            </Link>
 
-          <Link to="/login">
-            <button className="border border-white text-white px-8 py-3 rounded-lg hover:bg-white hover:text-blue-600 transition">
-              Login
-            </button>
-          </Link>
+            <Link to="/login">
+              <Button
+                variant="outline"
+                className="border-white text-white hover:bg-white hover:text-blue-600"
+              >
+                Login
+              </Button>
+            </Link>
 
-        </div>
+          </div>
 
+        </motion.div>
       </div>
-
     </section>
   );
 }
