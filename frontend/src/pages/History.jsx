@@ -1,12 +1,21 @@
+import { useState } from "react";
 import DashboardLayout from "../layouts/DashboardLayout";
 import { Link } from "react-router-dom";
+import {
+  FaSearch,
+  FaHistory,
+  FaRedo,
+  FaEye,
+} from "react-icons/fa";
 
 function History() {
+  const [search, setSearch] = useState("");
 
   const history = [
     {
       id: 1,
       subject: "DBMS",
+      difficulty: "Medium",
       score: 8,
       total: 10,
       date: "10 July 2026",
@@ -14,6 +23,7 @@ function History() {
     {
       id: 2,
       subject: "Python",
+      difficulty: "Easy",
       score: 10,
       total: 10,
       date: "09 July 2026",
@@ -21,84 +31,225 @@ function History() {
     {
       id: 3,
       subject: "Java",
+      difficulty: "Hard",
       score: 7,
       total: 10,
       date: "08 July 2026",
     },
   ];
 
+  const filteredHistory = history.filter((quiz) =>
+    quiz.subject.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const badgeColor = (percentage) => {
+    if (percentage >= 80)
+      return "bg-green-100 text-green-700";
+
+    if (percentage >= 60)
+      return "bg-yellow-100 text-yellow-700";
+
+    return "bg-red-100 text-red-700";
+  };
+
   return (
     <DashboardLayout>
 
-      <h1 className="text-4xl font-bold mb-10">
+      {/* Heading */}
 
-        Quiz History
+      <div className="flex flex-col lg:flex-row justify-between items-center mb-10 gap-5">
 
-      </h1>
+        <div>
+
+          <h1 className="text-4xl font-bold flex items-center gap-3">
+
+            <FaHistory className="text-blue-600" />
+
+            Quiz History
+
+          </h1>
+
+          <p className="text-gray-500 mt-2">
+            Review your previous quiz attempts.
+          </p>
+
+        </div>
+
+        {/* Search */}
+
+        <div className="relative w-full lg:w-96">
+
+          <FaSearch
+            className="absolute left-4 top-4 text-gray-400"
+          />
+
+          <input
+            type="text"
+            placeholder="Search subject..."
+            value={search}
+            onChange={(e) =>
+              setSearch(e.target.value)
+            }
+            className="
+            w-full
+            pl-12
+            pr-4
+            py-3
+            rounded-xl
+            border
+            focus:ring-2
+            focus:ring-blue-400
+            outline-none
+            "
+          />
+
+        </div>
+
+      </div>
+
+      {/* History Cards */}
 
       <div className="space-y-6">
 
-        {history.map((quiz) => (
+        {filteredHistory.map((quiz) => {
 
-          <div
-            key={quiz.id}
-            className="bg-white rounded-xl shadow p-6"
-          >
+          const percentage = Math.round(
+            (quiz.score / quiz.total) * 100
+          );
 
-            <div className="flex justify-between">
+          return (
 
-              <div>
+            <div
+              key={quiz.id}
+              className="
+              bg-white
+              rounded-3xl
+              shadow-lg
+              p-8
+              hover:shadow-xl
+              transition
+              "
+            >
 
-                <h2 className="text-2xl font-bold">
+              <div className="flex flex-col lg:flex-row justify-between gap-8">
 
-                  {quiz.subject} Quiz
+                {/* Left */}
 
-                </h2>
+                <div>
 
-                <p className="mt-3">
+                  <h2 className="text-2xl font-bold">
 
-                  Date : {quiz.date}
+                    {quiz.subject} Quiz
 
-                </p>
+                  </h2>
 
-                <p>
+                  <p className="text-gray-500 mt-2">
 
-                  Score : {quiz.score}/{quiz.total}
+                    📅 {quiz.date}
 
-                </p>
+                  </p>
 
-                <p>
+                  <div className="flex flex-wrap gap-3 mt-5">
 
-                  Accuracy :
+                    <span className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm">
 
-                  {" "}
+                      {quiz.difficulty}
 
-                  {Math.round(
-                    (quiz.score / quiz.total) * 100
-                  )}
+                    </span>
 
-                  %
+                    <span className="bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm">
 
-                </p>
+                      Score: {quiz.score}/{quiz.total}
 
-              </div>
+                    </span>
 
-              <div>
+                    <span
+                      className={`px-4 py-2 rounded-full text-sm ${badgeColor(
+                        percentage
+                      )}`}
+                    >
 
-                <Link
-                  to="/result"
-                  className="bg-blue-600 text-white px-5 py-3 rounded-lg"
-                >
-                  View Result
-                </Link>
+                      {percentage}% Accuracy
+
+                    </span>
+
+                  </div>
+
+                </div>
+
+                {/* Buttons */}
+
+                <div className="flex flex-col sm:flex-row gap-4">
+
+                  <Link
+                    to="/result"
+                    className="
+                    flex
+                    items-center
+                    gap-2
+                    bg-blue-600
+                    hover:bg-blue-700
+                    text-white
+                    px-6
+                    py-3
+                    rounded-xl
+                    transition
+                    "
+                  >
+
+                    <FaEye />
+
+                    View Result
+
+                  </Link>
+
+                  <Link
+                    to="/quiz"
+                    className="
+                    flex
+                    items-center
+                    gap-2
+                    bg-green-600
+                    hover:bg-green-700
+                    text-white
+                    px-6
+                    py-3
+                    rounded-xl
+                    transition
+                    "
+                  >
+
+                    <FaRedo />
+
+                    Retry Quiz
+
+                  </Link>
+
+                </div>
 
               </div>
 
             </div>
 
+          );
+
+        })}
+
+        {filteredHistory.length === 0 && (
+
+          <div className="bg-white rounded-3xl shadow-lg p-12 text-center">
+
+            <h2 className="text-3xl font-bold">
+              No Quiz Found
+            </h2>
+
+            <p className="text-gray-500 mt-4">
+              Try searching with another subject.
+            </p>
+
           </div>
 
-        ))}
+        )}
 
       </div>
 

@@ -1,104 +1,118 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
+import ForgotPasswordPage from "../pages/ForgotPassword";
+
 import Dashboard from "../pages/Dashboard";
 import UploadNotes from "../pages/UploadNotes";
 import GenerateQuestions from "../pages/GenerateQuestions";
 import Quiz from "../pages/Quiz";
 import Result from "../pages/Result";
 import History from "../pages/History";
+import Analytics from "../pages/Analytics";
 import Profile from "../pages/Profile";
-import ForgotPasswordPage from "../pages/ForgotPassword";
 import NotFound from "../pages/NotFound";
 
 import ProtectedRoute from "../components/common/ProtectedRoute";
 
 function AppRoutes() {
   return (
-    <BrowserRouter>
-      <Routes>
+    <Routes>
 
-        {/* Public Routes */}
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route
-          path="/forgot-password"
-          element={<ForgotPasswordPage />}
-        />
+      {/* Public Routes */}
 
-        {/* Protected Routes */}
+      <Route path="/" element={<Home />} />
 
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+      <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/upload"
-          element={
-            <ProtectedRoute>
-              <UploadNotes />
-            </ProtectedRoute>
-          }
-        />
+      <Route path="/signup" element={<Signup />} />
 
-        <Route
-          path="/generate"
-          element={
-            <ProtectedRoute>
-              <GenerateQuestions />
-            </ProtectedRoute>
-          }
-        />
+      <Route
+        path="/forgot-password"
+        element={<ForgotPasswordPage />}
+      />
 
-        <Route
-          path="/quiz"
-          element={
-            <ProtectedRoute>
-              <Quiz />
-            </ProtectedRoute>
-          }
-        />
+      {/* Protected Routes */}
 
-        <Route
-          path="/result"
-          element={
-            <ProtectedRoute>
-              <Result />
-            </ProtectedRoute>
-          }
-        />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
 
-        <Route
-          path="/history"
-          element={
-            <ProtectedRoute>
-              <History />
-            </ProtectedRoute>
-          }
-        />
+      <Route
+        path="/upload"
+        element={
+          <ProtectedRoute>
+            <UploadNotes />
+          </ProtectedRoute>
+        }
+      />
 
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
+      <Route
+        path="/generate"
+        element={
+          <ProtectedRoute>
+            <GenerateQuestions />
+          </ProtectedRoute>
+        }
+      />
 
-        {/* 404 */}
-        <Route path="*" element={<NotFound />} />
+      <Route
+        path="/quiz"
+        element={
+          <ProtectedRoute>
+            <Quiz />
+          </ProtectedRoute>
+        }
+      />
 
-      </Routes>
-    </BrowserRouter>
+      <Route
+        path="/result"
+        element={
+          <ProtectedRoute>
+            <Result />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/history"
+        element={
+          <ProtectedRoute>
+            <History />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/analytics"
+        element={
+          <ProtectedRoute>
+            <Analytics />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* 404 */}
+
+      <Route path="*" element={<NotFound />} />
+
+    </Routes>
   );
 }
 

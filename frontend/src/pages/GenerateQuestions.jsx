@@ -1,76 +1,112 @@
 import { useState } from "react";
+
 import DashboardLayout from "../layouts/DashboardLayout";
+
+import QuestionsList from "../components/generate/QuestionsList";
 
 function GenerateQuestions() {
   const [subject, setSubject] = useState("DBMS");
   const [difficulty, setDifficulty] = useState("Medium");
   const [count, setCount] = useState(10);
   const [type, setType] = useState("MCQ");
+
+  const [loading, setLoading] = useState(false);
   const [questions, setQuestions] = useState([]);
 
   const handleGenerate = () => {
-    const dummyQuestions = [
-      {
-        question: "What is a Primary Key?",
-        options: [
-          "Unique identifier",
-          "Foreign Key",
-          "Index",
-          "Constraint"
-        ]
-      },
-      {
-        question: "Which SQL command retrieves data?",
-        options: [
-          "INSERT",
-          "SELECT",
-          "UPDATE",
-          "DELETE"
-        ]
-      }
-    ];
+    setLoading(true);
 
-    setQuestions(dummyQuestions);
+    setTimeout(() => {
+      const dummyQuestions = [
+        {
+          question: "What is a Primary Key?",
+          options: [
+            "Unique Identifier",
+            "Foreign Key",
+            "Constraint",
+            "Index",
+          ],
+        },
+        {
+          question: "Which SQL command retrieves data?",
+          options: [
+            "INSERT",
+            "SELECT",
+            "UPDATE",
+            "DELETE",
+          ],
+        },
+        {
+          question: "Which language is mainly used for React?",
+          options: [
+            "Python",
+            "Java",
+            "JavaScript",
+            "C++",
+          ],
+        },
+        {
+          question: "Which normal form removes partial dependency?",
+          options: [
+            "1NF",
+            "2NF",
+            "3NF",
+            "BCNF",
+          ],
+        },
+      ];
+
+      setQuestions(dummyQuestions);
+      setLoading(false);
+    }, 1800);
   };
 
   return (
     <DashboardLayout>
+      {/* Page Heading */}
+      <div className="mb-10">
+        <h1 className="text-4xl font-bold text-slate-800">
+          🧠 AI Question Generator
+        </h1>
 
-      <h1 className="text-4xl font-bold mb-8">
-        Generate AI Questions
-      </h1>
+        <p className="text-gray-500 mt-3">
+          Generate intelligent exam questions from your uploaded
+          study material.
+        </p>
+      </div>
 
-      <div className="bg-white rounded-xl shadow p-8">
+      {/* Generator Form */}
+      <div className="bg-white rounded-3xl shadow-lg p-8">
 
         <div className="grid md:grid-cols-2 gap-6">
 
+          {/* Subject */}
           <div>
-
-            <label className="block mb-2 font-medium">
+            <label className="block font-semibold mb-2">
               Subject
             </label>
 
             <select
-              className="w-full border p-3 rounded"
+              className="w-full border rounded-xl p-3"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
             >
               <option>DBMS</option>
-              <option>Python</option>
               <option>Java</option>
-              <option>AI</option>
+              <option>Python</option>
+              <option>Artificial Intelligence</option>
+              <option>Cloud Computing</option>
             </select>
-
           </div>
 
+          {/* Difficulty */}
           <div>
-
-            <label className="block mb-2 font-medium">
+            <label className="block font-semibold mb-2">
               Difficulty
             </label>
 
             <select
-              className="w-full border p-3 rounded"
+              className="w-full border rounded-xl p-3"
               value={difficulty}
               onChange={(e) => setDifficulty(e.target.value)}
             >
@@ -78,92 +114,90 @@ function GenerateQuestions() {
               <option>Medium</option>
               <option>Hard</option>
             </select>
-
           </div>
 
+          {/* Number of Questions */}
           <div>
-
-            <label className="block mb-2 font-medium">
+            <label className="block font-semibold mb-2">
               Number of Questions
             </label>
 
             <input
               type="number"
-              className="w-full border p-3 rounded"
+              min="1"
+              max="50"
+              className="w-full border rounded-xl p-3"
               value={count}
               onChange={(e) => setCount(e.target.value)}
             />
-
           </div>
 
+          {/* Question Type */}
           <div>
-
-            <label className="block mb-2 font-medium">
+            <label className="block font-semibold mb-2">
               Question Type
             </label>
 
             <select
-              className="w-full border p-3 rounded"
+              className="w-full border rounded-xl p-3"
               value={type}
               onChange={(e) => setType(e.target.value)}
             >
               <option>MCQ</option>
               <option>True / False</option>
               <option>Short Answer</option>
+              <option>Long Answer</option>
             </select>
-
           </div>
 
         </div>
 
         <button
           onClick={handleGenerate}
-          className="mt-8 bg-blue-600 text-white px-8 py-3 rounded-lg"
+          disabled={loading}
+          className="
+            mt-8
+            bg-gradient-to-r
+            from-blue-600
+            to-indigo-600
+            hover:from-blue-700
+            hover:to-indigo-700
+            text-white
+            px-8
+            py-3
+            rounded-xl
+            font-semibold
+            transition
+            disabled:opacity-70
+          "
         >
-          Generate Questions
+          {loading
+            ? "Generating Questions..."
+            : "Generate Questions"}
         </button>
-
       </div>
 
-      {questions.length > 0 && (
+      {/* Loading */}
+      {loading && (
+        <div className="bg-white rounded-3xl shadow-lg p-8 mt-8 text-center">
 
-        <div className="mt-10 bg-white p-8 rounded-xl shadow">
+          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
 
-          <h2 className="text-2xl font-bold mb-6">
-            Generated Questions
+          <h2 className="mt-5 text-xl font-semibold">
+            AI is generating questions...
           </h2>
 
-          {questions.map((q, index) => (
-
-            <div
-              key={index}
-              className="mb-8"
-            >
-
-              <h3 className="font-semibold mb-4">
-
-                {index + 1}. {q.question}
-
-              </h3>
-
-              {q.options.map((option, i) => (
-
-                <p key={i} className="ml-4 mb-2">
-
-                  {String.fromCharCode(65 + i)}. {option}
-
-                </p>
-
-              ))}
-
-            </div>
-
-          ))}
+          <p className="text-gray-500 mt-2">
+            Please wait a few seconds.
+          </p>
 
         </div>
-
       )}
 
+      {/* Questions */}
+      {!loading && (
+        <QuestionsList questions={questions} />
+      )}
     </DashboardLayout>
   );
 }

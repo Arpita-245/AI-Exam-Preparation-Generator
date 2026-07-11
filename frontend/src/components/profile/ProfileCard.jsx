@@ -1,69 +1,29 @@
-import useAuth from "../../hooks/useAuth";
+import { FaUserCircle } from "react-icons/fa";
 
-function ProfileCard() {
-  const { user } = useAuth();
-
+function ProfileCard({ user }) {
   return (
-    <div className="bg-white rounded-xl shadow-lg p-8">
+    <div className="bg-white rounded-3xl shadow-lg p-8 text-center">
 
-      <div className="flex flex-col items-center">
+      <FaUserCircle
+        className="mx-auto text-blue-600"
+        size={120}
+      />
 
-        <img
-          src="https://ui-avatars.com/api/?name=Demo+User&background=2563eb&color=fff&size=150"
-          alt="avatar"
-          className="rounded-full w-32 h-32"
-        />
+      <h2 className="text-3xl font-bold mt-6">
+        {user.name}
+      </h2>
 
-        <h2 className="text-3xl font-bold mt-5">
-          {user?.name}
-        </h2>
+      <p className="text-gray-500 mt-2">
+        {user.email}
+      </p>
 
-        <p className="text-gray-500 mt-2">
-          {user?.email}
-        </p>
+      <div className="mt-6">
 
-      </div>
+        <span className="bg-blue-100 text-blue-700 px-5 py-2 rounded-full">
 
-      <div className="grid md:grid-cols-2 gap-6 mt-10">
+          AI Learner
 
-        <div>
-
-          <label className="font-medium">
-            College
-          </label>
-
-          <input
-            className="w-full border rounded-lg p-3 mt-2"
-            defaultValue="ABC College"
-          />
-
-        </div>
-
-        <div>
-
-          <label className="font-medium">
-            Course
-          </label>
-
-          <input
-            className="w-full border rounded-lg p-3 mt-2"
-            defaultValue="B.Sc IT"
-          />
-
-        </div>
-
-        <div>
-
-          <label className="font-medium">
-            Semester
-          </label>
-
-          <input
-            className="w-full border rounded-lg p-3 mt-2"
-            defaultValue="Semester 5"
-          />
-
-        </div>
+        </span>
 
       </div>
 
