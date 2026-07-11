@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Generated Quiz</title>
+</head>
+
+<body>
+
+<h2>{{ note.original_filename }}</h2>
+
+<hr>
+
+<pre>
+{{ note.quiz }}
+</pre>
+
+<br>
+
+<a href="{{ url_for('notes.my_notes') }}">
+Back
+</a>
+
+</body>
+
+</html>

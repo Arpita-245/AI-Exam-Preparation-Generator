@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Attempt Quiz</title>
+</head>
+
+<body>
+
+<h2>📝 Attempt Quiz</h2>
+
+<form method="POST"
+      action="{{ url_for('exam.submit_quiz', note_id=note.id) }}">
+
+{% for q in questions %}
+
+{% set question_no = loop.index %}
+
+<hr>
+
+<h3>{{ q.question }}</h3>
+
+{% for option in q.options %}
+
+<label>
+
+<input
+    type="radio"
+    name="q{{ question_no }}"
+    value="{{ option[0] }}">
+
+{{ option }}
+
+</label>
+
+<br>
+
+{% endfor %}
+
+{% endfor %}
+
+<br>
+
+<button type="submit">
+    Submit Quiz
+</button>
+
+</form>
+
+</body>
+
+</html>

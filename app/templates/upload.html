@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Upload Study Material</title>
+</head>
+
+<body>
+
+    <h2>Upload Study Material</h2>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <p style="color:green;">
+                    {{ message }}
+                </p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <input
+            type="file"
+            name="file"
+            required>
+
+        <br><br>
+
+        <button type="submit">
+            Upload File
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="{{ url_for('dashboard.dashboard') }}">
+        Back to Dashboard
+    </a>
+
+</body>
+
+</html>
