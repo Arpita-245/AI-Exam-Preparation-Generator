@@ -13,6 +13,9 @@ from PyPDF2 import PdfReader
 from config import Config
 from app.models import StudyMaterial, QuizResult
 
+# ✅ NEW (RAG IMPORTS)
+from app.rag_utils import split_text, create_index
+
 
 pdf_bp = Blueprint("pdf", __name__)
 
@@ -21,7 +24,7 @@ pdf_bp = Blueprint("pdf", __name__)
 # ==========================================================
 NOTES_FOLDER = "app/notes_data"
 
-# ✅ Fix Windows file/folder conflict
+# Fix Windows conflict
 if os.path.exists(NOTES_FOLDER) and not os.path.isdir(NOTES_FOLDER):
     os.remove(NOTES_FOLDER)
 
@@ -39,13 +42,13 @@ def extract_text(pdf_path):
         try:
             text += page.extract_text() or ""
         except:
-            pass  # skip problematic pages safely
+            pass  # skip broken pages safely
 
     return text
 
 
 # ==========================================================
-# 📥 Load notes for chatbot (NEW - IMPORTANT)
+# 📥 Load notes (still useful fallback)
 # ==========================================================
 def load_user_notes(user_id):
     path = os.path.join(NOTES_FOLDER, f"{user_id}.txt")
@@ -58,48 +61,66 @@ def load_user_notes(user_id):
 
 
 # ==========================================================
-# 🚀 Upload PDF + Save Notes (FIXED)
+# 🚀 Upload PDF + Save Notes + CREATE VECTOR INDEX 🔥
 # ==========================================================
 @pdf_bp.route("/upload-pdf", methods=["POST"])
 @login_required
 def upload_pdf():
 
-    # ✅ Check file exists
-    if "pdf" not in request.files:
-        return jsonify({"error": "No file part in request"}), 400
+    try:
+        # ----------------------------------
+        # ✅ Check file
+        # ----------------------------------
+        if "pdf" not in request.files:
+            return jsonify({"error": "No file part"}), 400
 
-    file = request.files["pdf"]
+        file = request.files["pdf"]
 
-    # ✅ Check filename
-    if file.filename == "":
-        return jsonify({"error": "No selected file"}), 400
+        if file.filename == "":
+            return jsonify({"error": "No selected file"}), 400
 
-    # Save PDF
-    filename = secure_filename(file.filename)
-    filepath = os.path.join(Config.UPLOAD_FOLDER, filename)
+        # ----------------------------------
+        # 📁 Save PDF
+        # ----------------------------------
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(Config.UPLOAD_FOLDER, filename)
 
-    os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
-    file.save(filepath)
+        os.makedirs(Config.UPLOAD_FOLDER, exist_ok=True)
+        file.save(filepath)
 
-    # Extract text
-    extracted_text = extract_text(filepath)
+        # ----------------------------------
+        # 📄 Extract text
+        # ----------------------------------
+        extracted_text = extract_text(filepath)
 
-    # ✅ Handle empty extraction
-    if not extracted_text.strip():
-        return jsonify({"error": "Could not extract text from PDF"}), 400
+        if not extracted_text.strip():
+            return jsonify({"error": "Could not extract text"}), 400
 
-    # Save notes to file
-    notes_file = os.path.join(NOTES_FOLDER, f"{current_user.id}.txt")
+        # ----------------------------------
+        # 💾 Save notes (for backup)
+        # ----------------------------------
+        notes_file = os.path.join(NOTES_FOLDER, f"{current_user.id}.txt")
 
-    with open(notes_file, "w", encoding="utf-8") as f:
-        f.write(extracted_text)
+        with open(notes_file, "w", encoding="utf-8") as f:
+            f.write(extracted_text)
 
-    print(f"✅ PDF processed & notes saved for user {current_user.id}")
+        # ----------------------------------
+        # 🧠 CREATE RAG INDEX (🔥 MAIN UPGRADE)
+        # ----------------------------------
+        chunks = split_text(extracted_text)
+        create_index(chunks, current_user.id)
 
-    return jsonify({
-        "message": "PDF uploaded and processed successfully",
-        "text_preview": extracted_text[:300]  # helpful debug
-    })
+        print(f"✅ RAG index created for user {current_user.id}")
+
+        return jsonify({
+            "message": "PDF uploaded + AI index created successfully 🚀",
+            "chunks_created": len(chunks),
+            "preview": extracted_text[:300]
+        })
+
+    except Exception as e:
+        print("❌ PDF ERROR:", str(e))
+        return jsonify({"error": "Failed to process PDF"}), 500
 
 
 # ==========================================================
@@ -127,7 +148,12 @@ def download_summary(note_id):
     doc.build(story)
     buffer.seek(0)
 
-    return send_file(buffer, as_attachment=True, download_name="Summary.pdf", mimetype="application/pdf")
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name="Summary.pdf",
+        mimetype="application/pdf"
+    )
 
 
 # ==========================================================
@@ -170,7 +196,12 @@ def download_result(result_id):
     doc.build(story)
     buffer.seek(0)
 
-    return send_file(buffer, as_attachment=True, download_name="Quiz_Result.pdf", mimetype="application/pdf")
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name="Quiz_Result.pdf",
+        mimetype="application/pdf"
+    )
 
 
 # ==========================================================
@@ -198,4 +229,9 @@ def download_recommendation(note_id):
     doc.build(story)
     buffer.seek(0)
 
-    return send_file(buffer, as_attachment=True, download_name="Study_Recommendation.pdf", mimetype="application/pdf")
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name="Study_Recommendation.pdf",
+        mimetype="application/pdf"
+    )

@@ -3,6 +3,9 @@ from flask_login import login_required, current_user
 from groq import Groq
 import os
 
+# ✅ NEW (RAG IMPORT)
+from app.rag_utils import search_chunks
+
 # ==========================================
 # Create Blueprint
 # ==========================================
@@ -19,11 +22,9 @@ if not GROQ_API_KEY:
 client = Groq(api_key=GROQ_API_KEY)
 
 # ==========================================
-# Notes Folder
+# Notes Folder (fallback only)
 # ==========================================
 NOTES_FOLDER = "app/notes_data"
-
-# Ensure folder exists
 os.makedirs(NOTES_FOLDER, exist_ok=True)
 
 
@@ -37,7 +38,7 @@ def chatbot_page():
 
 
 # ==========================================
-# ✅ CHAT ROUTE (SAFE + OPTIMIZED)
+# ✅ CHAT ROUTE (RAG VERSION 🚀)
 # ==========================================
 @chatbot_bp.route("/chat", methods=["POST"])
 @login_required
@@ -57,27 +58,26 @@ def chat():
             return jsonify({"error": "Message cannot be empty"}), 400
 
         # ----------------------------------
-        # ✅ LOAD USER NOTES FILE
+        # 🧠 SEMANTIC SEARCH (🔥 MAIN UPGRADE)
         # ----------------------------------
-        notes_file = os.path.join(NOTES_FOLDER, f"{current_user.id}.txt")
+        relevant_notes = search_chunks(user_message, current_user.id)
 
-        notes = ""
+        # Fallback if no index exists yet
+        if not relevant_notes:
+            print("⚠️ No RAG data found, using fallback notes")
 
-        if os.path.exists(notes_file):
-            try:
+            notes_file = os.path.join(NOTES_FOLDER, f"{current_user.id}.txt")
+            relevant_notes = ""
+
+            if os.path.exists(notes_file):
                 with open(notes_file, "r", encoding="utf-8") as f:
-                    notes = f.read()
-            except Exception as e:
-                print("❌ Error reading notes:", e)
-                notes = ""
+                    relevant_notes = f.read()[:2000]
+
+        if not relevant_notes:
+            relevant_notes = "No relevant notes found."
 
         # ----------------------------------
-        # ✅ LIMIT SIZE (VERY IMPORTANT)
-        # ----------------------------------
-        notes = notes[:4000]  # Prevent token overflow
-
-        # ----------------------------------
-        # 🧠 PROMPT ENGINEERING
+        # 🧠 PROMPT ENGINEERING (UPDATED)
         # ----------------------------------
         messages = [
             {
@@ -85,15 +85,14 @@ def chat():
                 "content": (
                     "You are an AI exam assistant.\n"
                     "Answer ONLY using the provided notes.\n"
-                    "If the answer is not found in notes, reply exactly:\n"
-                    "'Not in notes'"
+                    "If not found, reply exactly: 'Not in notes'"
                 )
             },
             {
                 "role": "user",
                 "content": f"""
 NOTES:
-{notes}
+{relevant_notes}
 
 QUESTION:
 {user_message}
@@ -102,13 +101,13 @@ QUESTION:
         ]
 
         # ----------------------------------
-        # 🔥 CALL GROQ API (SAFE)
+        # 🔥 CALL GROQ API
         # ----------------------------------
         response = client.chat.completions.create(
             messages=messages,
             model="llama-3.1-8b-instant",
-            temperature=0.3,   # more accurate answers
-            max_tokens=300     # prevent long responses
+            temperature=0.3,
+            max_tokens=300
         )
 
         reply = (
@@ -118,9 +117,10 @@ QUESTION:
         )
 
         # ----------------------------------
-        # 🧾 LOGGING (SAFE)
+        # 🧾 LOGGING
         # ----------------------------------
         print(f"👤 User ({current_user.id}): {user_message}")
+        print(f"📚 Retrieved Notes: {relevant_notes[:200]}...")
         print(f"🤖 AI: {reply}")
 
         return jsonify({"reply": reply})
