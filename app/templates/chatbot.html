@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Chatbot</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+        }
+
+        #chat-box {
+            width: 60%;
+            margin: auto;
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .user {
+            text-align: right;
+            margin: 10px;
+            color: blue;
+            font-weight: bold;
+        }
+
+        .bot {
+            text-align: left;
+            margin: 10px;
+            color: green;
+        }
+
+        .typing {
+            color: gray;
+            font-style: italic;
+        }
+
+        #input-area {
+            width: 60%;
+            margin: auto;
+            display: flex;
+            margin-top: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px;
+            margin-left: 5px;
+            border: none;
+            background: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        #upload-area {
+            width: 60%;
+            margin: 20px auto;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2 style="text-align:center;">AI Study Assistant</h2>
+
+<!-- ✅ PDF Upload -->
+<div id="upload-area">
+    <input type="file" id="pdfFile">
+    <button onclick="uploadPDF()">Upload PDF</button>
+</div>
+
+<!-- ✅ Chat Box -->
+<div id="chat-box"></div>
+
+<!-- ✅ Input -->
+<div id="input-area">
+    <input type="text" id="message" placeholder="Ask something from your notes..." onkeypress="handleKey(event)">
+    <button onclick="sendMessage()">Send</button>
+</div>
+
+<script>
+// ==========================================
+// 📄 Upload PDF
+// ==========================================
+async function uploadPDF() {
+    let file = document.getElementById("pdfFile").files[0];
+
+    if (!file) {
+        alert("Select a PDF first");
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append("pdf", file);
+
+    let response = await fetch("/upload-pdf", {
+        method: "POST",
+        body: formData
+    });
+
+    let data = await response.json();
+
+    if (data.message) {
+        alert("✅ PDF uploaded successfully!");
+    } else {
+        alert("❌ " + data.error);
+    }
+}
+
+
+// ==========================================
+// ⌨️ Enter Key Support
+// ==========================================
+function handleKey(event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+}
+
+
+// ==========================================
+// 💬 Send Message
+// ==========================================
+async function sendMessage() {
+    let input = document.getElementById("message");
+    let chatBox = document.getElementById("chat-box");
+
+    let message = input.value.trim();
+
+    if (!message) return;
+
+    // Show user message
+    chatBox.innerHTML += `<div class="user">You: ${message}</div>`;
+
+    // Show typing indicator
+    chatBox.innerHTML += `<div class="bot typing" id="typing">AI is typing...</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    input.value = "";
+
+    try {
+        // ✅ IMPORTANT: matches backend
+        let response = await fetch("/chatbot/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message: message })
+        });
+
+        let data = await response.json();
+
+        // Remove typing
+        document.getElementById("typing").remove();
+
+        // Show response
+        if (data.reply) {
+            chatBox.innerHTML += `<div class="bot">AI: ${data.reply}</div>`;
+        } else {
+            chatBox.innerHTML += `<div class="bot">⚠️ No response from AI</div>`;
+        }
+
+    } catch (error) {
+        document.getElementById("typing").remove();
+        chatBox.innerHTML += `<div class="bot">❌ Server error. Try again.</div>`;
+    }
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+</script>
+
+</body>
+</html>

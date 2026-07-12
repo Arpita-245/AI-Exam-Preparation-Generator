@@ -1,38 +1,52 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Register</title>
 </head>
+
 <body>
 
-<h2>Student Registration</h2>
+    <h2>Student Registration</h2>
 
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-    {% for message in messages %}
-        <p style="color:green;">{{ message }}</p>
-    {% endfor %}
-{% endif %}
-{% endwith %}
+    <form method="POST">
 
-<form method="POST">
+        <label>Full Name</label><br>
+        <input
+            type="text"
+            name="full_name"
+            required
+        >
+        <br><br>
 
-    <label>Full Name</label><br>
-    <input type="text" name="full_name" required><br><br>
+        <label>Email</label><br>
+        <input
+            type="email"
+            name="email"
+            required
+        >
+        <br><br>
 
-    <label>Email</label><br>
-    <input type="email" name="email" required><br><br>
+        <label>Password</label><br>
+        <input
+            type="password"
+            name="password"
+            required
+        >
+        <br><br>
 
-    <label>Password</label><br>
-    <input type="password" name="password" required><br><br>
+        <button type="submit">
+            Register
+        </button>
 
-    <button type="submit">Register</button>
+    </form>
 
-</form>
+    <br>
 
-<br>
-
-<a href="/login">Already have an account?</a>
+    <a href="{{ url_for('auth.login') }}">
+        Already have an account?
+    </a>
 
 </body>
+
 </html>

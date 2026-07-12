@@ -2,47 +2,122 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard</title>
+
+<meta charset="UTF-8">
+<title>Dashboard</title>
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+body{
+    background:#f5f7fa;
+}
+
+.navbar{
+    box-shadow:0 2px 10px rgba(0,0,0,.1);
+}
+
+.card{
+    border:none;
+    border-radius:12px;
+    box-shadow:0px 4px 15px rgba(0,0,0,.08);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card h3{
+    font-size:16px;
+    color:#666;
+}
+
+.card p{
+    font-size:28px;
+    font-weight:bold;
+    color:#007BFF;
+}
+
+.chart-box{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0px 4px 15px rgba(0,0,0,.08);
+}
+
+</style>
+
 </head>
 
 <body>
 
-    <h1>🎓 AI-Based Exam Preparation System</h1>
+{% include "navbar.html" %}
 
-    <hr>
+<div class="container mt-4">
 
-    <h2>Welcome, {{ user.full_name }} 👋</h2>
+<h3 class="mb-3">Welcome, {{ user.full_name }} 👋</h3>
 
-    <hr>
+<!-- Flash Messages -->
+{% with messages=get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category,message in messages %}
+<div class="alert {% if category=='success' %}alert-success{% else %}alert-danger{% endif %}">
+    {{ message }}
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
 
-    <h3>Dashboard Statistics</h3>
+<!-- CARDS -->
+<div class="row g-4 mt-2">
 
-    <table border="1" cellpadding="10">
+<div class="col-md-3">
+<div class="card p-3 text-center">
+<h3>Uploaded Notes</h3>
+<p>{{ stats.notes }}</p>
+</div>
+</div>
 
-        <tr>
-            <th>Uploaded Notes</th>
-            <th>Quizzes Taken</th>
-            <th>Average Score</th>
-            <th>Subjects</th>
-        </tr>
+<div class="col-md-3">
+<div class="card p-3 text-center">
+<h3>Quizzes Taken</h3>
+<p>{{ stats.quizzes }}</p>
+</div>
+</div>
 
-        <tr>
-            <td>{{ stats.notes }}</td>
-            <td>{{ stats.quizzes }}</td>
-            <td>{{ stats.average }}%</td>
-            <td>{{ stats.subjects }}</td>
-        </tr>
+<div class="col-md-3">
+<div class="card p-3 text-center">
+<h3>Average Score</h3>
+<p>{{ stats.average }}%</p>
+</div>
+</div>
 
-    </table>
+<div class="col-md-3">
+<div class="card p-3 text-center">
+<h3>Highest Score</h3>
+<p>{{ stats.highest }}%</p>
+</div>
+</div>
 
-    <br>
+<div class="col-md-3">
+<div class="card p-3 text-center">
+<h3>Lowest Score</h3>
+<p>{{ stats.lowest }}%</p>
+</div>
+</div>
 
-    <h3>Quick Actions</h3>
+</div>
 
-    <ul>
+<!-- CHARTS -->
+<div class="row mt-5 g-4">
 
+<<<<<<< HEAD
         <li>
             <a href="{{ url_for('upload.upload') }}">
                 📤 Upload Notes
@@ -72,9 +147,54 @@
                 🚪 Logout
             </a>
         </li>
+=======
+<!-- Chart.js Line Chart -->
+<div class="col-md-6">
+<div class="chart-box">
+<h5>📈 Quiz Performance (Live)</h5>
+<canvas id="lineChart"></canvas>
+</div>
+</div>
 
-    </ul>
+<!-- ✅ UPDATED Matplotlib Image Chart -->
+<div class="col-md-6">
+<div class="chart-box text-center">
+
+<h5>📊 Performance Graph (Saved)</h5>
+
+<img src="{{ url_for('static', filename=chart_file) }}"
+     class="img-fluid"
+     width="500">
+>>>>>>> master
+
+</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const labels = {{ quiz_labels|tojson }};
+const scores = {{ quiz_scores|tojson }};
+
+// Line Chart
+new Chart(document.getElementById("lineChart"),{
+    type:"line",
+    data:{
+        labels:labels,
+        datasets:[{
+            label:"Quiz Score (%)",
+            data:scores,
+            borderWidth:3,
+            tension:0.3,
+            fill:true
+        }]
+    }
+});
+
+</script>
 
 </body>
-
 </html>

@@ -1,0 +1,99 @@
+from flask import Blueprint
+from flask import render_template
+from flask import request
+from flask import redirect
+from flask import url_for
+from flask import flash
+
+from flask_login import login_required
+from flask_login import current_user
+
+from app.extensions import db
+from app.models import StudyMaterial
+from app.models import QuizResult
+
+from app.services.quiz_parser import QuizParser
+
+exam_bp = Blueprint("exam", __name__)
+
+
+# ==================================================
+# Attempt Quiz
+# ==================================================
+
+@exam_bp.route("/attempt-quiz/<int:note_id>")
+@login_required
+def attempt_quiz(note_id):
+
+    note = StudyMaterial.query.get_or_404(note_id)
+
+    if not note.quiz:
+        flash("Quiz has not been generated yet.", "error")
+        return redirect(url_for("notes.my_notes"))
+
+    questions = QuizParser.parse(note.quiz)
+
+    if len(questions) == 0:
+        flash("Unable to read the quiz.", "error")
+        return redirect(url_for("quiz.view_quiz", note_id=note.id))
+
+    return render_template(
+        "attempt_quiz.html",
+        note=note,
+        questions=questions
+    )
+
+
+# ==================================================
+# Submit Quiz
+# ==================================================
+
+@exam_bp.route("/submit-quiz/<int:note_id>", methods=["POST"])
+@login_required
+def submit_quiz(note_id):
+
+    note = StudyMaterial.query.get_or_404(note_id)
+
+    questions = QuizParser.parse(note.quiz)
+
+    if len(questions) == 0:
+        flash("Quiz data is invalid.", "error")
+        return redirect(url_for("notes.my_notes"))
+
+    score = 0
+    total = len(questions)
+
+    for i, question in enumerate(questions, start=1):
+
+        student_answer = request.form.get(f"q{i}")
+        correct_answer = question["answer"]
+
+        if student_answer == correct_answer:
+            score += 1
+
+    percentage = round((score / total) * 100, 2)
+
+    # Save quiz result
+    result = QuizResult(
+        score=score,
+        total_questions=total,
+        percentage=percentage,
+        study_material_id=note.id,
+        user_id=current_user.id
+    )
+
+    db.session.add(result)
+
+    # ---------------------------------------------
+    # Enable Recommendation Generation
+    # ---------------------------------------------
+    note.recommendation_generated = False
+
+    db.session.commit()
+
+    flash(
+        f"Quiz submitted successfully! Your Score: {score}/{total} ({percentage}%)",
+        "success"
+    )
+
+    return redirect(url_for("dashboard.dashboard"))
