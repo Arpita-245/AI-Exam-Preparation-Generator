@@ -12,22 +12,29 @@
             width: 60%;
             margin: auto;
             height: 400px;
-            overflow-y: scroll;
+            overflow-y: auto;
             border: 1px solid #ccc;
             padding: 10px;
             background: white;
+            border-radius: 8px;
         }
 
         .user {
             text-align: right;
             margin: 10px;
             color: blue;
+            font-weight: bold;
         }
 
         .bot {
             text-align: left;
             margin: 10px;
             color: green;
+        }
+
+        .typing {
+            color: gray;
+            font-style: italic;
         }
 
         #input-area {
@@ -40,11 +47,22 @@
         input[type="text"] {
             flex: 1;
             padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
 
         button {
             padding: 10px;
             margin-left: 5px;
+            border: none;
+            background: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
         }
 
         #upload-area {
@@ -59,7 +77,7 @@
 
 <h2 style="text-align:center;">AI Study Assistant</h2>
 
-<!-- ✅ PDF Upload Section -->
+<!-- ✅ PDF Upload -->
 <div id="upload-area">
     <input type="file" id="pdfFile">
     <button onclick="uploadPDF()">Upload PDF</button>
@@ -68,19 +86,18 @@
 <!-- ✅ Chat Box -->
 <div id="chat-box"></div>
 
-<!-- ✅ Input Area -->
+<!-- ✅ Input -->
 <div id="input-area">
-    <input type="text" id="message" placeholder="Ask something from your notes...">
+    <input type="text" id="message" placeholder="Ask something from your notes..." onkeypress="handleKey(event)">
     <button onclick="sendMessage()">Send</button>
 </div>
 
 <script>
 // ==========================================
-// 📄 Upload PDF Function (FIXED)
+// 📄 Upload PDF
 // ==========================================
 async function uploadPDF() {
-    let fileInput = document.getElementById("pdfFile");
-    let file = fileInput.files[0];
+    let file = document.getElementById("pdfFile").files[0];
 
     if (!file) {
         alert("Select a PDF first");
@@ -88,8 +105,6 @@ async function uploadPDF() {
     }
 
     let formData = new FormData();
-
-    // ✅ FIX HERE (IMPORTANT)
     formData.append("pdf", file);
 
     let response = await fetch("/upload-pdf", {
@@ -100,7 +115,7 @@ async function uploadPDF() {
     let data = await response.json();
 
     if (data.message) {
-        alert("✅ PDF uploaded successfully! Now ask questions.");
+        alert("✅ PDF uploaded successfully!");
     } else {
         alert("❌ " + data.error);
     }
@@ -108,24 +123,38 @@ async function uploadPDF() {
 
 
 // ==========================================
-// 💬 Send Chat Message
+// ⌨️ Enter Key Support
+// ==========================================
+function handleKey(event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+}
+
+
+// ==========================================
+// 💬 Send Message
 // ==========================================
 async function sendMessage() {
     let input = document.getElementById("message");
     let chatBox = document.getElementById("chat-box");
 
-    let message = input.value;
+    let message = input.value.trim();
 
     if (!message) return;
 
+    // Show user message
     chatBox.innerHTML += `<div class="user">You: ${message}</div>`;
-    chatBox.innerHTML += `<div class="bot" id="typing">Typing...</div>`;
+
+    // Show typing indicator
+    chatBox.innerHTML += `<div class="bot typing" id="typing">AI is typing...</div>`;
     chatBox.scrollTop = chatBox.scrollHeight;
 
     input.value = "";
 
     try {
-        let response = await fetch("/chat", {
+        // ✅ IMPORTANT: matches backend
+        let response = await fetch("/chatbot/chat", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -135,13 +164,19 @@ async function sendMessage() {
 
         let data = await response.json();
 
+        // Remove typing
         document.getElementById("typing").remove();
 
-        chatBox.innerHTML += `<div class="bot">AI: ${data.reply}</div>`;
+        // Show response
+        if (data.reply) {
+            chatBox.innerHTML += `<div class="bot">AI: ${data.reply}</div>`;
+        } else {
+            chatBox.innerHTML += `<div class="bot">⚠️ No response from AI</div>`;
+        }
 
     } catch (error) {
         document.getElementById("typing").remove();
-        chatBox.innerHTML += `<div class="bot">❌ Error connecting to server</div>`;
+        chatBox.innerHTML += `<div class="bot">❌ Server error. Try again.</div>`;
     }
 
     chatBox.scrollTop = chatBox.scrollHeight;

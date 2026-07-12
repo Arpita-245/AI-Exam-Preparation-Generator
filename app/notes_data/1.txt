@@ -1,862 +1,163 @@
-Data Structure
-🧠  T o p i c  1 :  Data
-✅  D e f i n i t i o n :
-Data is a collection of raw f acts, figures, or values that r epresent inf ormation but  
-have no me aning until the y are processed.
-In computing, dat a can be in the f orm of numbers, charact ers, 
-images, audio, or video.
-🔄  D i f f e r e n c e  B e t w e e n  D a t a  a n d  I n f o r m a t i o n :
-Data Information
-Raw facts and figur es Processed and or ganized data
-No context or meaning on it s ownMeaningful and useful
-Example: 4 5 ,  3 2 ,  6 7 “The average scor e of the class is 48ˮ
-🔠  T y p e s  o f  D a t a :
- Numer ical Dat a
-Example: 4 5 ,   9 ,  0 . 0 0 5
-Can be fur ther divided int o:
-Int eger (int) : 1 2 ,   1 0 0
-Floating P oint (float) : 3 . 1 4 ,   0 . 8 9
- Char acter Dat a
-Single symbols or charact ers
-Example: ' a ', ' B ', ' 9 ', ' # '
- String Dat a
-Data Structur e
-1A sequence of charact ers
-Example: " H e l l o ", " 1 2 3 a b c "
- Boole an Dat a
-Only two values: t r u e or f a l s e
- Image,  Audio,  Video Dat a
-Complex data types, used in mul timedia syst ems
-🧩  E x a m p l e s  o f  D a t a  i n  D a i l y  L i f e :
-Scenar io Example of R aw Dat a
-Weather App 32°C, 1013 hPa, 72% humidit y
-Student R esult Marks in 5 subject s: 7 8 ,  9 0 ,  6 6 ,  8 1 ,  8 8
-ECommer ce OrderProduct ID 567 , Quantit y: 3, Price: ₹499
-Attendance R egisterNames, Pr esent/Absent flags 1 or 0
-Bank Transaction D a t e :  1 0  0 7  2 0 2 5, A m o u n t :  ₹ 2 0 0 0, T y p e :  C r e d i t
-🗃  H o w  D a t a  I s  R e p r e s e n t e d  i n  M e m o r y :
-In memor y RAM, e verything is st ored in binar y 0s and 1s) .
-For example:
-Character ' A '  ASCII 6 5  Binar y: 0 1 0 0 0 0 0 1
-Integer 5  Binar y: 0 0 0 0 0 1 0 1
-💡  W h y  U n d e r s t a n d i n g  “ D a t a ˮ  I s  I m p o r t a n t  B e f o r e  L e a r n i n g  D a t a  
-S t r u c t u r e s ?
-Because dat a structur es are all about:
-How to store dat a efficient ly
-How to organiz e it
-How to retrieve or pr ocess it quickl y
-Data Structur e
-2So underst anding the types and natur e of data helps us choose the right  
-structur e to use.
-🎓  S i m p l e  E x e r c i s e :
-🔸 Identify the t ype of dat a in the f ollowing:
- t r u e
- " D e l h i "
- 9 8 . 6
- ' Z '
- 2 0 2 5
-🧠  T o p i c  2 :  Data Organization
-✅  D e f i n i t i o n :
-Data organization  refers to how data is arranged, structur ed, or gr ouped so that it  
-can be used ef ficiently.
-🧱  W h y  I s  D a t a  O r g a n i z a t i o n  I m p o r t a n t ?
-Imagine y ou have 1000 student r ecords. Without pr oper organization:
-It becomes har d to search for a specific student
-Itʼs inefficient to sort them by marks
-Itʼs difficult to updat e records quickl y
-💡 So, good or ganization mak es data faster to access, e asier to 
-manage, and bet ter for analysis.
-Data Structur e
-3🔄  C o m m o n  W a y s  t o  O r g a n i z e  D a t a :
-Organization
-Met hodDescr iption Example
-Line arData arranged in a sequence, one af ter
-anotherArrays, Linked Lists
-Hier archic al Data arranged in a tr ee-like structur e Folder syst ems, XML
-Tabular Rows and columnsDatabases, Ex cel
-sheets
-Graph-b asedData arranged using nodes and
-connectionsSocial net works, Maps
-Hashed Key-value pair for fast access Hash Tables, Maps
-🧩  E x a m p l e s  o f  D a t a  O r g a n i z a t i o n  i n  R e a l  L i f e :
-Real-World Scenar io Type of Or ganization
-Contacts in a phone Alphabetic al, Tabular
-File storage on comput erHierarchical Folders/Subf olders)
-Excel sheet of mar ks Tabular R ows = student s, Columns = subject s)
-Metro or Train Map Graph St ations = nodes, R outes = edges)
-Dictionar y lookup Hashed K ey  Word, Value  Me aning)
-L i n e a r  v s  N o n - l i n e a r  O r g a n i z a t i o n :
-Aspect Line ar Dat a Non-line ar Dat a
-Structur e Sequential Branching or Hierar chical
-Access Time Generall y slower (O(n)) Can be optimiz ed (like O(log n))
-Examples Array, Linked List Trees, Graphs
- M e m o r y  R e p r e s e n t a t i o n :
-Contiguous  (like arrays): Easy t o index but resizing is har d
-Non-contiguous  (like linked lists): Flexible siz e but slo wer access
-Data Structur e
-4K e y  T a k e a w a y s :
-Organization af fects time comple xity (how fast operations run)
-Choosing the r ight data structur e  Choosing the r ight way to organiz e your 
-data
-🎓  E x e r c i s e :
-Classify the f ollowing as Line ar, Hierarchical, or Graph-b ased:
- Your comput erʼs file explorer
- A WhatsApp chat list
- Delhi Metr o route system
- Student r oll list in at tendance r egister
- Organization's emplo yee chart
-T o p i c  3 :  Data Access Methods
-W h a t  I s  D a t a  A c c e s s ?
-Data Access refers to the wa y we retrieve, insert, or updat e data stored in a dat a 
-structure or memor y.
-Imagine y ou have books on a shelf . The wa y you pick a book —  
-by number , name, or b y checking one b y one — is similar t o 
-different access methods in dat a structur es.
-T y p e s  o f  D a t a  A c c e s s  M e t h o d s :
-There are 4 pr imar y ways to access dat a:
-Data Structur e
-5Access Met hod Definition Example
-1. Sequential
-AccessAccessing element s one-b y-one in orderReading a book p age by
-page
-2. Direct A ccessJumping dir ectly to a particular element
-using its inde xJumping t o Page 45 of a
-book
-3. Random
-AccessAccessing an y memor y location without
-following any sequenceRAM memor y access
-4. Inde xed A ccessUsing an inde x file/t able to find and
-access dat a fasterBook's inde x or search
-in Excel
-1 .  Sequential Access
-You start from t he beginning  and go st ep by step.
-Common in: Link ed List s, Tapes, Files, Queues, St acks
-Slow if the item is at the end
-Example:
-Searching for "Mango " in a grocery list:
-Apple, Banana, Grapes, Mango, Orange ]
- You check Apple  Banana  Grapes  Mango
-2 .  Direct (Indexed) Access
-Each element has a unique position/inde x.
-Access using that inde x: like a r r [ 3 ]
-Common in: Arrays
-Example:
-int arr[] = {10 , 20, 30, 40, 50;
-Data Structur e
-6System.out.pr intln(arr[2]);  // pr ints 30
-Fastest form of access O1 time )
-Needs memor y to be stored contiguousl y
-3 .  Random Access
-Similar t o direct access, but mor e general.
-Used in har dware like RAM Random Access Memor y)
-Allows any memor y loc ation to be accessed inst antly
-Example:
-While using a lapt op, if you open 3 dif ferent files at once, RAM accesses all of  
-them quickl y, not in sequence.
-4 .  Indexed Access
-Uses an inde x file or map that holds the loc ations of actual dat a.
-Common in: Databases, Excel tables, Se arch engines
-Example:
-Think of a dictionar y:
-You want t o find the w ord “Zebra ˮ.
-You look at the inde x, it tells you “Page 210ˮ
-You directly jump ther e — this is inde xed access .
-T a b l e  S u m m a r y :
-Met hod Best Used F or SpeedExample Dat a
-Structur e
-Sequential
-AccessWhen pr ocessing all dat a in
-orderSlow Linked List, Queue
-Data Structur e
-7Met hod Best Used F or SpeedExample Dat a
-Structur e
-Direct AccessWhen loc ation is kno wn (by
-index)Fast Array
-Random AccessFor general f ast memor y
-accessVery Fast RAM, Ar ray
-Indexed AccessFor fast searching from huge
-dataMedium Database, Excel
-E a s y  R e a l - L i f e  A n a l o g y :
-Real-Lif e Ex ample Access Met hod
-Watching a mo vie on VHS t ape Sequential Access
-Skipping t o a scene in Net flix Direct/Random Access
-Searching for a word in dictionar yIndexed Access
-Reading a magazine fr ont-to-backSequential Access
-E x e r c i s e :
-Match the access method:
- Array  ?
- Searching roll number in file  ?
- Reading dat a from hard disk sect ors  ?
- RAM  ?
- Playing audio fr om beginning t o end  ?
-T o p i c  4 :  Basics of Algorithm
-Data Structur e
-8W h a t  I s  a n  A l g o r i t h m ?
-An algor ithm is a step-b y-step procedure or set of rules t o solve a problem or  
-perform a task.
-“Just like a recipe guides y ou in cooking a dish, an algor ithm 
-guides the comput er to solve a problem.ˮ
-C h a r a c t e r i s t i c s  o f  a  G o o d  A l g o r i t h m :
-Char act er istic Descr iption
-Input It should t ake 0 or mor e inputs
-Output It should pr oduce at le ast one output
-Definiteness Each step must be cle ar and unambiguous
-Finit eness It must end af ter a finit e number of st eps
-Effectiv eness All steps must be b asic enough t o be done manuall y (theoretically)
-📘  R e a l - L i f e  E x a m p l e s  o f  A l g o r i t h m s :
-🍳  Example 1: Making Tea (Real Life)
-Steps:
- Boil water
- Add tea leaves
- Add sugar
- Add milk
- Stir and boil again
- Strain the t ea
- Serve hot
-👉 This is a real-w orld algor ithm for making t ea.
-Data Structur e
-9Find Maximum of 3 Numbers (Programming)
-Input: a  5 , b  9, c  2
-Step 1 Comp are a and b → max = b
-Step 2 Comp are max and c → max = b
-Output: 9
-👉 This is a simple algor ithm to find the maximum of 3 numbers.
-H o w  D o  W e  W r i t e  A l g o r i t h m s ?
-There are two common met hods:
- Natur al language (st eps)
- Pseudocode
-E x a m p l e :  A l g o r i t h m  t o  c h e c k  i f  a  n u m b e r  i s  e v e n  o r  o d d
-Step F ormat:
-Step 1 Take input number n
-Step 2 If n % 2  0
-          Print "Even"
-        Else
-          Print "Odd"
-W h y  D o  W e  N e e d  A l g o r i t h m s ?
-Because:
-Computers are fast but need st ep-b y-step instructions
-Helps us sol ve problems syst ematic ally
-Leads to efficient coding
-Data Structur e
-10Used in real-w orld syst ems like Google Se arch, ATM machines, Maps, et c.
-C l a s s i f i c a t i o n  o f  A l g o r i t h m s :
-Type Used When Examples
-Search Algor ithms To find dat aLinear Search, Binar y
-Search
-Sort Algorithms To arrange dat a Bubble Sor t, Merge Sort
-Recursive
-AlgorithmsWhen the pr oblem c an be divided int o
-subproblemsFactorial, Tower of Hanoi
-Greedy AlgorithmsWhen loc al optimum le ads to global
-optimumCoin Change, Kruskalʼ s
-Algo
-Dynamic
-ProgrammingWhen overlapping subpr oblems e xist Fibonacci, 0/1 Knapsack
-Divide and ConquerWhen pr oblem is br oken down
-recursivelyMerge Sort, Quick Sor t
-🧠  F u n  F a c t :
-Google Se arch, YouTube Recommendations, GPS, Online  
-Shopping — all r ely on clever algorithms behind the scenes!
-🔁  A l g o r i t h m  v s  P r o g r a m :
-Algor ithm Program
-Logic or st eps to solve a problem Implement ation of algor ithm in a language
-Language-independent Written in a specific language (lik e Java, C
-Abstract Concrete (code)
-🧪  Q u i c k  E x e r c i s e :
-Write an algor ithm (in st eps) to:
-Data Structur e
-11 Calculat e the area of a rectangle
- Find whether a giv en year is a le ap year
- Calculat e the sum of first n natural numbers
-T o p i c  5 :  Asymptotic Notations
-W h a t  A r e  A s y m p t o t i c  N o t a t i o n s ?
-Asymptotic notations ar e mathematic al tools used to anal yze the per formance of  
-algor ithms, especiall y when input siz e grows very large.
-Instead of running the code, w e study how many steps the 
-algorithm takes.
-W h y  D o  W e  N e e d  A s y m p t o t i c  N o t a t i o n s ?
-To underst and how efficient an algor ithm is as input gr ows
-To find out if y our program will w ork well for large input s (n  10⁶ or mor e)
-T h r e e  M a j o r  A s y m p t o t i c  N o t a t i o n s :
-Notation Represent s Tells us about
-Big O O Upper Bound W orst Case )Maximum time an algor ithm will
-take
-Omega (Ω) Lower Bound Best Case )Minimum time an algor ithm will
-take
-Thet a (Θ)Tight Bound A verage or Exact
-case)Average time or e xact beha vior
-1 .  Big O Notation – Worst Case
-Data Structur e
-12Used most commonl y
-Describes the maximum  number of st eps algor ithm takes as input incr eases
-Tells us ho w an algor ithm beha ves in the worst -case scenar io
-E x a m p l e :
-Linear Sear ch:
-You search for an element in an ar ray of size n
-Worst c ase: the element is at the end or not pr esent
-Time: n comparisons → O ( n )
-🔸 Binar y Sear ch:
-Halves the input e ach time
-Time: O ( l o g  n )
-C o m m o n  B i g - O  F u n c t i o n s :
-Time Comple xityName Example
-O1 Constant Time Accessing a r r [ i ]
-O(log n) Logarithmic Time Binary Search
-O(n) Linear Time Linear Search
-O(n log n) Linearithmic Time Merge Sort, Quick Sor t (avg)
-O(n²) Quadratic Time Bubble Sor t, Selection Sor t
-O2ⁿ) Exponential Time Recursive Fibonacci
-O(n!) Factorial Time Traveling Salesman Pr oblem
-2 .  Omega Notation – Best Case
-Describes the minimum time  an algor ithm will t ake.
-Represents ideal situation , often theor etical.
-E x a m p l e :
-Linear Sear ch:
-Data Structur e
-13If the target is the first element , it takes 1 step
-Best c ase: Ω1
-Bubble Sor t:
-If the array is already sor ted, it can detect it in 1 p ass
-Best case: Ωn)
-3 .  Theta Notation – Average Case / Tight Bound
-When an algor ithm alwa ys takes the same time in best and w orst case
-Exact beha vior for many cases
-Used when time is tightl y bound abo ve and belo w
-E x a m p l e :
-Linear Sear ch:
-If the target is in the middle → average n / 2 steps
- Time = Θn)
-Binar y Sear ch:
-Always takes around l o g ₂ n comparisons
- Time = Θlog n)
-📊  V i s u a l  C o m p a r i s o n :
-perl
-CopyEdit
-Time Comple xity Graph:
-|
-|          O(n²)
-|          /
-|         /
-|        /
-|       /
-Data Structur e
-14|      /      O(n)
-|     /      /
-|    /      /
-|   /      /
-|  /      /     O(log n)
-| /      /     /
-|/______|_____/__________ Input Siz e (n)
-  O1
-💥  M i s c o n c e p t i o n  A l e r t :
-O ( n ) ≠ exact time  I tʼs at most time
-A faster algorithm in pr actice may still ha ve the same Big-O as a slo wer one 
-(due to constant factors)
-E a s y  R e a l - L i f e  A n a l o g y :
-Scenar io Notation Explanation
-Delivery may take up to 7 da ys O7 days) Worst case upper limit
-Delivery may take minimum 1 da y Ω1 day) Best case lower limit
-Delivery will take exactly 35 da ys usuall yΘ4 days) Average expected time
-🧪  E x e r c i s e :
-What is the Big O time comple xity of:
-a) Accessing a r r [ i ]
-b) A nested loop o ver n
-c) Merge Sort
- Write best c ase and w orst case time f or Linear Search.
-Data Structur e
-15T o p i c  6 :  Complexity of Algorithms
-W h a t  I s  A l g o r i t h m i c  C o m p l e x i t y ?
-Algorithmic comple xity tells us how much time  and memor y (sp ace) an algor ithm 
-will use, based on t he input siz e n.
-"Efficiency is not just about doing the job r ight — it's about  
-doing it f ast and using less memor y."
-1 .  Time Complexity
-Time Comple xity is the amount of time ( number of st eps or oper ations) an 
-algorithm takes to complet e based on the siz e of input n.
-We count operations, not actual time.
-H o w  t o  C a l c u l a t e  T i m e  C o m p l e x i t y ?
-We analyze how the number of oper ations grows with the input siz e.
-E x a m p l e  1 :  L i n e a r  S e a r c h
-int arr[] = {2, 4 , 6, 8, 10;
-for (int i  0; i < n; i++) {
-    if (arr[i] == x)
-        return i;
-}
-Worst case: x is not found → n iterations
-Time Comple xity: O(n)
-Data Structur e
-16E x a m p l e  2 :  N e s t e d  L o o p
-for (int i  0; i < n; i++) {
-   for (int j  0; j < n; j++) {
-       System.out.pr int("*");
-   }
-}
-Outer loop: n times
-Inner loop: n times for each outer
-Time Comple xity: O(n²)
-E x a m p l e  3 :  B i n a r y  S e a r c h
-while(low <= high){
-    mid = (lo w + high) / 2;
-}
-Each step cuts input in half
-✅ Time Comple xity: O(log n)
-📦  C o m m o n  T i m e  C o m p l e x i t i e s  ( S o r t e d  b y  S p e e d ) :
-Comple xit y Name Ex ample Algor it hm
-O1 Constant Accessing a r r [ i ]
-O(log n) Logarithmic Binary Search
-O(n) Linear Linear Search
-O(n log n) Linearithmic Merge Sort, Quick Sor t
-Data Structur e
-17Comple xit y Name Ex ample Algor it hm
-O(n²) Quadratic Bubble Sor t, Selection Sor t
-O2ⁿ), O(n!) Exponential / F actorialRecursive Fibonacci, TSP
-I m p o r t a n t  N o t e s :
-We ignore const ant f actors O(3n)  O(n)
-Focus onl y on dominant t erms O(n + n²)  O(n²)
-P r o  T i p :
-If input siz e increases and y our program slows do wn dr astic ally, it probably has 
-O(n²) or worse comple xity.
-2 .  Space Complexity
-Space Comple xity is the amount of memor y RAM an algor ithm uses t o run — 
-including:
-Input storage
-Output st orage
-Temporar y variables
-Recursion st ack
-📘  E x a m p l e  1 :  F a c t o r i a l  ( R e c u r s i v e )
-int fact(int n){
-   if(n  0 r eturn 1;
-   return n * fact(n  1;
-}
-Recursion depth = n
-Data Structur e
-18Space Comple xity: O(n) (due to call stack)
-E x a m p l e  1 :  A r r a y  S u m
-int sum  0;
-for (int i  0; i < n; i++) {
-   sum += ar r[i];
-}
-Only one variable s u m
-Space Comple xity: O1 (constant)
-T i m e  v s  S p a c e  T r a d e - O f f :
-Sometimes w e use mor e sp ace to save time
-Q u i c k  E x e r c i s e :
-What is the time and sp ace comple xity of this code:
-for(int i=0; i<n; i++){
-    for(int j=0; j<n; j++){
-        System.out.pr int(i + j);
-    }
-}
-What is the sp ace comple xity of:
-Data Structur e
-19int[] arr = new int[n];
-🧠  T o p i c  7 :  Greedy Algorithm
-✅  W h a t  I s  a  G r e e d y  A l g o r i t h m ?
-A Greedy Algor ithm builds up a solution step-b y-step, always choosing the best  
-(most optimal ) option at t hat moment , with the hope that this le ads to the glob al 
-optimum .
-“Pick the loc ally best choice at e ach step, and hope it le ads to 
-the best o verall solution. ˮ
-🎯  G r e e d y  S t r a t e g y  i n  S i m p l e  W o r d s :
-Imagine y ouʼre at a shop with ₹100 , and you want t o buy as man y items as 
-possible. A greedy str ategy would be:
-🟢 Always buy the cheapest it em f irst.
-🔍  K e y  I d e a :
-Solve the problem b y making a series of choices .
-Each choice is the best possible  at that moment.
-Does not r econsider  previous decisions.
-🧠  W h e n  D o e s  G r e e d y  W o r k ?
-Greedy works only when the problem has:
- Greedy-choice pr oper ty A global solution c an be ar rived at by choosing loc al 
-optimum.
-Data Structur e
-20 Optimal substructur e A problem c an be br oken into smaller subpr oblems 
-which can be sol ved optimall y.
-✅  R e a l - L i f e  E x a m p l e s  o f  G r e e d y  S t r a t e g y :
-Scenar io Greedy Appr oach
-Making change with coins Always use the lar gest coin first
-Scheduling maximum t asks Pick tasks that finish e arliest
-Buying maximum it ems with limit ed mone yPick che apest items first
-📘  E x a m p l e  1 :  Coin Change Problem
-Problem: Y ou have coins of denominations 1, 2, 5 , 10, and y ou 
-need to make change f or ₹27 using the f ewest coins possible.
-Greedy Str ategy:
-Pick highest possible coin e ach time:
-₹10  Pick 2  ₹20
-₹5  Pick 1  ₹25
-₹2  Pick 1  ₹27
-✅ Answer: 3 coins: 10, 5, 2
-🟠 Not e Greedy may not w ork for all coin syst ems (e.g., 1, 3 , 4 for ₹6.
-📘  E x a m p l e  2 :  Activity Selection Problem
-Youʼre given n activities with st art and end times. Select the  
-maximum number of non-o verlapping activities.
-Greedy Str ategy:
-Sort by ending time
-Always pick the ne xt activity that starts after the pr evious ends
-Data Structur e
-21✅ Time Comple xity: O(n log n) (due to sorting)
-🧠  T o p i c  8 :  Divide and Conquer
-✅  W h a t  I s  D i v i d e  a n d  C o n q u e r ?
-Divide and Conquer  is a strat egy wher e:
- The problem is divided into smaller subpr oblems.
- Each subpr oblem is conquer ed (solved recursively).
- The solutions ar e then combined  to form the final solution.
-“Break the pr oblem int o parts, solve each part independentl y, 
-and combine the r esults.ˮ
-🔍  K e y  S t e p s :
-Step What Happens
-Divide Break the pr oblem int o smaller subpr oblems
-Conquer Solve each subpr oblem (often recursively)
-Combine Merge the sub-solutions t o get the final answ er
-🧠  W h e n  t o  U s e  I t ?
-Problem c an be broken int o independent subpr oblems
-Subproblems ar e similar in natur e
-Useful when sol ving recursively and when combining helps build the final  
-result
-📘  R e a l - L i f e  A n a l o g y :
-Data Structur e
-22You want t o sort a stack of 100 c ards:
-First, split it int o 2 stacks of 50
-Sort each stack individuall y
-Finally, mer ge the two sorted stacks
-That's Divide and Conquer  in action!
-📚  F a m o u s  D i v i d e  a n d  C o n q u e r  A l g o r i t h m s :
-Algor ithm Time Comple xity Explanation
-Mer ge Sor tO(n log n) Divide  Sor t  Merge
-Quick Sor t O(n log n) a vg, O(n²) w orstDivide using piv ot  Sor t
-Binar y Se archO(log n) Divide ar ray  Search in one half
-✅  A d v a n t a g e s  o f  D i v i d e  a n d  C o n q u e r :
-Breaks large problems int o manage able parts
-Naturally suppor ts recursion
-Often efficient (e.g., O ( n  l o g  n ) sorting)
-❌  D i s a d v a n t a g e s :
-Overhead of recursion  (stack space)
-Some pr oblems c annot be split independentl y
-Requires combining st ep logic
-T o p i c :  Dynamic Programming (DP)
-✅  D e f i n i t i o n :
-Data Structur e
-23Dynamic Pr ogramming is a t echnique used in algor ithm design  to solve problems  
-with overlapping subpr oblems and optimal substructur e by storing int ermediat e 
-resul ts to avoid redundant w ork.
-🔁 DP  Divide pr oblem int o subproblems  St ore results → 
-Reuse  Ef ficient solution.
-🧩  K e y  C o n c e p t s :
-1 .  Overlapping Subproblems
-The same subpr oblems ar e solved multiple times.
-Example: In Fibonacci, f i b ( 5 ) calls f i b ( 4 ) and f i b ( 3 ) which again c all f i b ( 2 ), etc.
-2 .  Optimal Substructure
-The optimal solution of the pr oblem depends on the optimal solutions of it s 
-subproblems.
-Example: Shor test path from A to C via B is optimal onl y if AB and BC ar e 
-both shor test.
-🔥  W h y  U s e  D P ?
-Avoids recomput ation  Speeds up algor ithm
-Converts exponential time algor ithms into polynomial time algor ithms
-Solves problems wit h constr aints efficiently
-✅  S t e p s  t o  S o l v e  A n y  D P  P r o b l e m :
- Identify if t he pr oblem has o verlapping subpr oblems and optimal  
-substructur e
- Define t he st ate: d p [ i ]  What does it r epresent?
-Data Structur e
-24 State transition  Relation bet ween d p [ i ] and smaller st ates
- Base c ase Smallest v ersion of the pr oblem
- Decide Memoization or T abulation
- Optimiz e sp ace if needed
-✅  What is a Data Structure?
-A Data Structur e is a way of organizing and st oring data in a comput er so that it  
-can be accessed and modified ef ficiently.
-Think of it lik e different types of cont ainers in y our kitchen:
-A box to store cookies (lik e an array)
-A basket to put dir ty clothes one on t op of another (lik e a 
-stack)
-A queue at a billing count er where people come and go in  
-order (like a queue )
-A famil y tree showing parents, children, and grandchildr en 
-(like a tree)
-🎯  Purpose of Data Structures
-Efficient data storage
-Faster search, inser tion,  and deletion
-Better memor y management
-Helps in algor ithm design
-🧺  Types of Data Structures
-Data Structur e
-25Type Example Descr iption
-Line arArray, Linked List, St ack,
-QueueData is arranged in a sequence
-Non-Line ar Tree, GraphData is arranged in hierar chy or
-network
-Hash-b ased HashMap, HashSet Stores data as key-value pairs
-File-b ased File, Dat abase Used for long-t erm storage
-🌳  Data Structure Bifurcation
-Meaning: Cat egorizing/Dividing Dat a Structur es)
-🎯  Why Bifurcation is Important?
-To solve problems ef ficiently, you must choose the right t ype of data structur e. 
-Bifurcation helps in underst anding:
-How dat a is st ored
-How dat a is accessed
-What oper ations ar e easy or har d
-🧩  Bifurcation of Data Structures
-󾠮  Based on Structure Type:
-Cat egor y Ex amples Explanation
-Line arArray, LinkedList, St ack,
-QueueData stored sequentiall y, one after
-another
-Non-Line ar Tree, GraphData stored in a hier archic al or network
-structure
-󾠯  Based on Storage Location:
-Data Structur e
-26Cat egor y Ex amples Explanation
-Primitiv e DS int, char , float Basic dat a types
-Non-Pr imitiv e DSArray, List, Tree, etc.Built using pr imitive DS
-󾠰  Based on Operation Access:
-Cat egor y Ex ample Oper ation St y le
-Static Array Fixed size, direct access
-Dynamic LinkedList Size grows/shrinks, needs tra versal
-                    Dat a Structur es
-                          |
-     --------------------------------------------------
-     |                     |                          |
-  Linear              Non-Line ar                  Hash-Based
-     |                     |                          |
- Array, List         T ree, Graph              HashMap, HashSet
- Stack, Queue
-📌 General Applications of Data Structures
-🔎  1. Arrays
-Use Cases :
-Storing multiple values (e.g., mar ks of student s)
-Implementing matr ices in scientific comput ation
-Image pr ocessing 2D ar rays)
-Applic ations:
-Search & sor t algorithms Binar y Search, Bubble Sor t)
-Data Structur e
-27Lookup t ables
-🔁  2. Linked Lists
-Use Cases :
-Dynamic memor y allocation
-Implement ation of queues and st acks
-Applic ations:
-Music pla ylists (next/previous)
-Image slidesho w
-Undo-redo functionalit y
-📚  3. Stack
-Use Cases :
-LIFO Last In First Out) operations
-Applic ations:
-Function c all management in r ecursion
-Parenthesis mat ching
-Undo feature in editors
-Expression e valuation Infix  P ostfix)
-📮  4. Queue
-Use Cases :
-FIFO First In First Out) operations
-Applic ations:
-CPU Scheduling OS
-Print Queue
-Handling r equests in web servers
-Data Structur e
-28BFS Breadth-First Se arch)
-🧠  5 . Hash Table (HashMap, HashSet)
-Use Cases :
-Fast access using k eys
-Applic ations:
-Implementing dictionar ies
-Caches
-Symbol t ables in compilers
-Password verification syst ems
-✅  S T R I N G  P R O G R A M S
-🔹  1. Find Length of String
-java
-CopyEdit
-import java.util.Sc anner;
-public class Str ingLength {
-    public st atic void main(Str ing[] args) {
-        Scanner sc = ne w Scanner(Syst em.in);
-        System.out.pr int("Enter a string: ");
-        String str = sc.ne xtLine();
-        System.out.pr intln("Length of the str ing is: " + str .length());
-        sc.close();
-    }
-}
-Data Structur e
-29🔹  2. Copy a String
-java
-CopyEdit
-import java.util.Sc anner;
-public class Str ingCopy {
-    public st atic void main(Str ing[] args) {
-        Scanner sc = ne w Scanner(Syst em.in);
-        System.out.pr int("Enter a string: ");
-        String original = sc.ne xtLine();
-        String copied = ne w String(original); // or simpl y copied = or iginal;
-        System.out.pr intln("Copied str ing is: " + copied);
-        sc.close();
-    }
-}
-🔹  3. Compare Two Strings
-java
-CopyEdit
-import java.util.Sc anner;
-public class Str ingComp are {
-    public st atic void main(Str ing[] args) {
-        Scanner sc = ne w Scanner(Syst em.in);
-        System.out.pr int("Enter first str ing: ");
-        String s1  sc.ne xtLine();
-        System.out.pr int("Enter second str ing: ");
-        String s2  sc.ne xtLine();
-        if (s1.equals(s2)) {
-            System.out.pr intln("Str ings are equal.");
-        } else {
-Data Structur e
-30            System.out.pr intln("Str ings are not equal. ");
-        }
-        sc.close();
-    }
-}
-🔹  4. Concatenate Two Strings
-java
-CopyEdit
-import java.util.Sc anner;
-public class Str ingConc at {
-    public st atic void main(Str ing[] args) {
-        Scanner sc = ne w Scanner(Syst em.in);
-        System.out.pr int("Enter first str ing: ");
-        String s1  sc.ne xtLine();
-        System.out.pr int("Enter second str ing: ");
-        String s2  sc.ne xtLine();
-        String result = s1.conc at(s2); // or s1  s2
-        System.out.pr intln("Conc atenated string: " + r esult);
-        sc.close();
-    }
-}
-✅  A R R A Y  P R O G R A M S
-🔹  5. Search Element in Array
-Data Structur e
-31java
-CopyEdit
-import java.util.Sc anner;
-public class Ar raySearch {
-    public st atic void main(Str ing[] args) {
-        Scanner sc = ne w Scanner(Syst em.in);
-        System.out.pr int("Enter size of array: ");
-        int n = sc.ne xtInt();
-        int[] arr = new int[n];
-        System.out.pr intln("Ent er array element s:");
-        for (int i  0; i < n; i++) ar r[i] = sc.ne xtInt();
-        System.out.pr int("Enter element t o search: ");
-        int target = sc.ne xtInt();
-        boolean found = f alse;
-        for (int i  0; i < n; i++) {
-            if (arr[i] == target) {
-                System.out.pr intln("Element f ound at inde x " + i);
-                found = true;
-                break;
-            }
-        }
-        if !found) Syst em.out.pr intln("Element not f ound.");
-        sc.close();
-    }
-}
-🔹  6. Sort Given Array
-Data Structur e
-32java
-CopyEdit
-import java.util.Arrays;
-import java.util.Sc anner;
-public class Ar raySort {
-    public st atic void main(Str ing[] args) {
-        Scanner sc = ne w Scanner(Syst em.in);
-        System.out.pr int("Enter size of array: ");
-        int n = sc.ne xtInt();
-        int[] arr = new int[n];
-        System.out.pr intln("Ent er array element s:");
-        for (int i  0; i < n; i++) ar r[i] = sc.ne xtInt();
-        Arrays.sort(arr);
-        System.out.pr intln("Sor ted array: "  Ar rays.toString(arr));
-        sc.close();
-    }
-}
-🔹  7. Reverse Elements of Array
-java
-CopyEdit
-import java.util.Sc anner;
-public class Ar rayReverse {
-    public st atic void main(Str ing[] args) {
-        Scanner sc = ne w Scanner(Syst em.in);
-        System.out.pr int("Enter size of array: ");
-        int n = sc.ne xtInt();
-        int[] arr = new int[n];
-Data Structur e
-33        System.out.pr intln("Ent er array element s:");
-        for (int i  0; i < n; i++) ar r[i] = sc.ne xtInt();
-        System.out.pr int("Reversed ar ray: ");
-        for (int i = n  1; i  0; i--) {
-            System.out.pr int(arr[i] + " ");
-        }
-        sc.close();
-    }
-}
-🔹  8. Addition of Elements of Array
-java
-CopyEdit
-import java.util.Sc anner;
-public class Ar raySum {
-    public st atic void main(Str ing[] args) {
-        Scanner sc = ne w Scanner(Syst em.in);
-        System.out.pr int("Enter size of array: ");
-        int n = sc.ne xtInt();
-        int[] arr = new int[n];
-        int sum  0;
-        System.out.pr intln("Ent er array element s:");
-        for (int i  0; i < n; i++) {
-            arr[i] = sc.ne xtInt();
-            sum += ar r[i];
-        }
-        System.out.pr intln("Sum of element s: " + sum);
-        sc.close();
-Data Structur e
-34    }
-}
-🔹  9. Find Largest Element from Array
-java
-CopyEdit
-import java.util.Sc anner;
-public class Ar rayMax {
-    public st atic void main(Str ing[] args) {
-        Scanner sc = ne w Scanner(Syst em.in);
-        System.out.pr int("Enter size of array: ");
-        int n = sc.ne xtInt();
-        int[] arr = new int[n];
-        System.out.pr intln("Ent er array element s:");
-        for (int i  0; i < n; i++) ar r[i] = sc.ne xtInt();
-        int max = ar r[0];
-        for (int i  1; i < n; i++) {
-            if (arr[i] > max) max = ar r[i];
-        }
-        System.out.pr intln("Lar gest element: " + max);
-        sc.close();
-    }
-}
-🔹  10. Find Smallest Element from Array
-Data Structur e
-35java
-CopyEdit
-import java.util.Sc anner;
-public class Ar rayMin {
-    public st atic void main(Str ing[] args) {
-        Scanner sc = ne w Scanner(Syst em.in);
-        System.out.pr int("Enter size of array: ");
-        int n = sc.ne xtInt();
-        int[] arr = new int[n];
-        System.out.pr intln("Ent er array element s:");
-        for (int i  0; i < n; i++) ar r[i] = sc.ne xtInt();
-        int min = ar r[0];
-        for (int i  1; i < n; i++) {
-            if (arr[i] < min) min = ar r[i];
-        }
-        System.out.pr intln("Smallest element: " + min);
-        sc.close();
-    }
-}
-Data Structur e
-36
+INTRODUCTION
+D A T A  S T R U C T U R EW HAT IS DATA O RG ANIZATIO N?
+Data organization refers to the systematic arrangement of data in a structured format,
+making it easy to retrieve, analyze, and interpret. This process involves classifying
+data into various categories and organizing it into databases, spreadsheets, or other
+forms of storage systems. Key components of data organization include classification,
+categorization, and structuring. For example, in a business setting, customer data
+might be organized by demographics, purchase history, and engagement levels,
+allowing for targeted marketing efforts and personalized customer service.
+For example, in a business setting, customer data might be organized by
+demographics, purchase history, and engagement levels, allowing for targeted
+marketing efforts and personalized customer service.W HAT IS DATA?
+Data is nothing but systematically recorded values and facts about a quantity. When
+the data available to us is not systematic or Organized, they are known as Raw Data.
+Mostly, the data given to us is in form of Raw data, and systematically Organizing
+them may be in form of either Bar Graph, Pictograph, Double Bar graph, or any other
+form of visual representation is called as Organization of Raw Data.
+Example of Raw data
+15 people were asked about their favorite sports, these are the answers given by
+them,
+Cricket, volleyball, tennis, cricket, cricket, tennis, badminton, volleyball, badminton,
+badminton, cricket, tennis, volleyball, cricket, tennis.NEED O F O RG ANIZING  DATA
+The advantages of organizing data,
+It saves a lot of time. 
+Take the previous example and find out which sport is chosen by most people, the
+answer can be given by both raw data and organized data, but in the latter case, the
+time consumed to answer the question and the difficulty in answering was a lot less.
+Removes any possible errors.
+In Unorganized data, the possibility of error is not zero, there can be errors either
+while gathering the data or while representing it, however, in Organized data, it is
+made sure that the data provided is completely correct and without any errors.
+Easy to understand and memorize.
+Organized data are visually appealing and are very easily memorized than raw data.DATA ACCESS M ETHO DS 
+Data access methods refer to the ways information can be retrieved from storage.
+Common methods include sequential access, direct access, and indexed access.
+Sequential access reads data in a linear order, while direct access allows retrieval
+from any location without sequential reading. Indexed access uses an index to locate
+specific data, potentially speeding up retrieval. 
+Types of Data Access Methods: 
+Sequential Access:
+Data is accessed in a linear order, one after another. This method is simple but
+can be slow if the desired data is far from the current position. An example is
+accessing data on magnetic tape. DATA ACCESS M ETHO DS
+Direct Access:
+Also known as random access, this method allows retrieving data from any
+location without needing to read preceding data. This is faster than sequential
+access when dealing with large datasets and when the location of the required
+data is known.
+Indexed Access:
+This method uses an index to locate data, similar to how an index in a book helps
+find specific information quickly. It involves looking up the index first to find the
+location of the desired data. BASICS O F ALG O RITHM
+Algorithm is a step-by-step procedure, which defines a set of instructions to be
+executed in a certain order to get the desired output. Algorithms are generally created
+independent of underlying languages, i.e. an algorithm can be implemented in more
+than one programming language.
+1.From the data structure point of view, following are some important categories of
+algorithms −
+Search − Algorithm to search an item in a data structure.
+Sort − Algorithm to sort items in a certain order.
+Insert − Algorithm to insert item in a data structure.
+Update − Algorithm to update an existing item in a data structure.
+Delete − Algorithm to delete an existing item from a data structure.ASYM PTO TIC NO TATIO NS 
+Asymptotic notation is a  w a y  t o  d e s c r i b e  t h e  e f f i c i e n c y  o f  a l g o r i t h m s ,  p a r t i c u l a r l y  i n  t e r m s  o f  h o w  t h e i r  r u n t i m e  o r
+m e m o r y  u s a g e  g r o w s  a s  t h e  i n p u t  s i z e  i n c r e a s e s. It provides a way to analyze and compare algorithms based on
+their growth rate, ignoring constant factors and lower-order terms.
+Why Use Asymptotic Notation?
+Focus on Scalability:
+Asymptotic notation helps understand how an algorithm's performance changes with large input sizes, allowing for
+better scalability predictions. 
+Algorithm Comparison:
+It provides a standardized way to compare the efficiency of different algorithms, helping choose the most
+appropriate one for a specific task. 
+Focus on Growth Rate:
+By ignoring constant factors and lower-order terms, it simplifies analysis and highlights the core behavior of the
+algorithm. ASYM PTO TIC NO TATIO NS 
+Big O (O):
+Represents the worst-case scenario, giving an upper bound on the algorithm's growth
+rate. It signifies the maximum time or space an algorithm could take for a given input size. 
+Omega (Ω):
+Represents the best-case scenario, providing a lower bound on the algorithm's growth
+rate. It indicates the minimum time or space an algorithm might take. 
+Theta (Θ):
+Represents the average-case scenario, providing both an upper and lower bound on the
+algorithm's growth rate. It signifies that the algorithm's time or space complexity is tightly
+bounded by a specific function. ALG O RITHM  CO M PLEXITY
+Complexities of an Algorithm
+The complexity of an algorithm computes the amount of time and spaces required by an
+algorithm for an input of size (n). The complexity of an algorithm can be divided into two
+types. The time complexity and the space complexity.
+ 
+T i m e  C o m p l e x i t y  o f  a n  A l g o r i t h m
+The time complexity is defined as the process of determining a formula for total time
+required towards the execution of that algorithm. This calculation is totally independent of
+implementation and programming language.
+Space Complexity of an Algorithm
+Space complexity is defining as the process of defining a formula for prediction of how much
+memory space is required for the successful execution of the algorithm. The memory space
+is generally considered as the primary memory.G REEDY ALG O RITHM S
+A greedy algorithm is an approach for solving a problem by selecting the best option
+available at the moment. It doesn't worry whether the current best result will bring the overall
+optimal result.
+ 
+A d v a n t a g e s  o f  G r e e d y  A p p r o a c h
+T h e  a l g o r i t h m  i s  e a s i e r  t o  d e s c r i b e .
+T h i s  a l g o r i t h m  c a n  p e r f o r m  b e t t e r  t h a n  o t h e r  a l g o r i t h m s  ( b u t ,  n o t  i n  a l l  c a s e s ) .
+Greedy Algorithm steps
+1.To begin with, the solution set (containing answers) is empty.
+2.At each step, an item is added to the solution set until a solution is reached.
+3.If the solution set is feasible, the current item is kept.
+4.Else, the item is rejected and never considered again.G REEDY ALG O RITHM S - EXAM PLE
+Problem: You have to make a change of an amount using the smallest possible number
+of coins.
+Amount: $18
+Available coins are
+  $5 coin
+  $2 coin
+  $1 coin
+There is no limit to the number of each coin you can use.G REEDY ALG O RITHM S - EXAM PLE
+Solution:
+1.Create an empty solution-set = { }. Available coins are {5, 2, 1}.
+2.We are supposed to find the sum = 18. Let's start with sum = 0.
+3.Always select the coin with the largest value (i.e. 5) until the sum > 18. (When we
+select the largest value at each step, we hope to reach the destination faster. This
+concept is called greedy choice property.)
+4.In the first iteration, solution-set = {5} and sum = 5.
+5.In the second iteration, solution-set = {5, 5} and sum = 10.
+6.In the third iteration, solution-set = {5, 5, 5} and sum = 15.
+7.In the fourth iteration, solution-set = {5, 5, 5, 2} and sum = 17. (We cannot select 5
+here because if we do so, sum = 20 which is greater than 18. So, we select the 2nd
+largest item which is 2.)
+8.Similarly, in the fifth iteration, select 1. Now sum = 18 and solution-set = {5, 5, 5, 2, 1}.INTRODUCTION TO 
+DIVIDE AND CONQUER ALGORITHM
+Divide and Conquer Algorithm is a problem-solving technique used to solve problems by
+dividing the main problem into subproblems, solving them individually and then merging
+them to find solution to the original problem. Divide and Conquer is mainly useful when we
+divide a problem into independent subproblems. WORKING OF 
+DIVIDE AND CONQUER ALGORITHM
+1. Divide:
+Break down the original problem into smaller subproblems.
+Each subproblem should represent a part of the overall problem.
+The goal is to divide the problem until no further division is possible.WORKING OF 
+DIVIDE AND CONQUER ALGORITHM
+. Conquer:
+Solve each of the smaller subproblems individually.
+If a subproblem is small enough (often referred to as the “base case”), we solve it
+directly without further recursion.
+The goal is to find solutions for these subproblems independently.P A G E  0 2CHARACTERISTICS OF DIVIDE AND CONQUER ALGORITHM
+Divide and Conquer Algorithm involves breaking down a problem into smaller, more manageable parts,
+solving each part individually, and then combining the solutions to solve the original problem. The
+characteristics of Divide and Conquer Algorithm are:
+Dividing the Problem: The first step is to break the problem into smaller, more manageable
+subproblems. This division can be done recursively until the subproblems become simple enough to
+solve directly.
+Independence of Subproblems: Each subproblem should be independent of the others, meaning that
+solving one subproblem does not depend on the solution of another. This allows for parallel processing
+or concurrent execution of subproblems, which can lead to efficiency gains.
+Conquering Each Subproblem: Once divided, the subproblems are solved individually. This may involve
+applying the same divide and conquer approach recursively until the subproblems become simple
+enough to solve directly, or it may involve applying a different algorithm or technique.
+Combining Solutions: After solving the subproblems, their solutions are combined to obtain the
+solution to the original problem. This combination step should be relatively efficient and
+straightforward, as the solutions to the subproblems should be designed to fit together seamlessly.

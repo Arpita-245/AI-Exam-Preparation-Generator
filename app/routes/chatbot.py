@@ -3,16 +3,15 @@ from flask_login import login_required, current_user
 from groq import Groq
 import os
 
-# ✅ NEW (RAG IMPORT)
 from app.rag_utils import search_chunks
 
 # ==========================================
-# Create Blueprint
+# ✅ CREATE BLUEPRINT
 # ==========================================
 chatbot_bp = Blueprint("chatbot", __name__)
 
 # ==========================================
-# Initialize Groq Client
+# 🔑 API KEY
 # ==========================================
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
@@ -22,30 +21,29 @@ if not GROQ_API_KEY:
 client = Groq(api_key=GROQ_API_KEY)
 
 # ==========================================
-# Notes Folder (fallback only)
+# 📁 NOTES FOLDER (fallback)
 # ==========================================
 NOTES_FOLDER = "app/notes_data"
 os.makedirs(NOTES_FOLDER, exist_ok=True)
 
-
 # ==========================================
-# ✅ UI ROUTE
+# ✅ UI ROUTE (IMPORTANT - YOU WERE MISSING THIS)
 # ==========================================
-@chatbot_bp.route("/chatbot", methods=["GET"])
+@chatbot_bp.route("/", methods=["GET"])
 @login_required
 def chatbot_page():
     return render_template("chatbot.html")
 
 
 # ==========================================
-# ✅ CHAT ROUTE (RAG VERSION 🚀)
+# 🤖 CHAT ROUTE (RAG + FIXED PROMPT)
 # ==========================================
 @chatbot_bp.route("/chat", methods=["POST"])
 @login_required
 def chat():
     try:
         # ----------------------------------
-        # ✅ SAFE JSON PARSING
+        # ✅ SAFE JSON
         # ----------------------------------
         data = request.get_json(silent=True)
 
@@ -58,16 +56,23 @@ def chat():
             return jsonify({"error": "Message cannot be empty"}), 400
 
         # ----------------------------------
-        # 🧠 SEMANTIC SEARCH (🔥 MAIN UPGRADE)
+        # 🔥 FIX 1: HANDLE SHORT QUERIES (HEADINGS)
+        # ----------------------------------
+        if len(user_message.split()) <= 5:
+            user_message = "Explain this topic clearly: " + user_message
+
+        # ----------------------------------
+        # 🧠 RAG SEARCH
         # ----------------------------------
         relevant_notes = search_chunks(user_message, current_user.id)
 
-        # Fallback if no index exists yet
+        # ----------------------------------
+        # 📄 FALLBACK (if no embeddings)
+        # ----------------------------------
         if not relevant_notes:
-            print("⚠️ No RAG data found, using fallback notes")
+            print("⚠️ No RAG results, using fallback file")
 
             notes_file = os.path.join(NOTES_FOLDER, f"{current_user.id}.txt")
-            relevant_notes = ""
 
             if os.path.exists(notes_file):
                 with open(notes_file, "r", encoding="utf-8") as f:
@@ -77,15 +82,20 @@ def chat():
             relevant_notes = "No relevant notes found."
 
         # ----------------------------------
-        # 🧠 PROMPT ENGINEERING (UPDATED)
+        # 🔥 FIX 2: SMART PROMPT
         # ----------------------------------
         messages = [
             {
                 "role": "system",
                 "content": (
-                    "You are an AI exam assistant.\n"
-                    "Answer ONLY using the provided notes.\n"
-                    "If not found, reply exactly: 'Not in notes'"
+                    "You are a helpful AI exam assistant.\n\n"
+                    "Rules:\n"
+                    "- Answer using the provided notes.\n"
+                    "- Try even if partial information exists.\n"
+                    "- If question is a topic or heading, explain it clearly.\n"
+                    "- Do NOT require exact match.\n"
+                    "- Only say 'Not in notes' if nothing is relevant.\n"
+                    "- Keep answers simple and clear."
                 )
             },
             {
@@ -101,12 +111,12 @@ QUESTION:
         ]
 
         # ----------------------------------
-        # 🔥 CALL GROQ API
+        # 🤖 GROQ CALL
         # ----------------------------------
         response = client.chat.completions.create(
             messages=messages,
             model="llama-3.1-8b-instant",
-            temperature=0.3,
+            temperature=0.4,
             max_tokens=300
         )
 

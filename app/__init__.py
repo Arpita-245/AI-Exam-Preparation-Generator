@@ -15,9 +15,8 @@ def create_app():
     app.config.from_object(Config)
 
     # ==========================================
-    # 🔐 SECRET KEY (REQUIRED FOR SESSION)
+    # 🔐 SECRET KEY
     # ==========================================
-    # Use config value if exists, else fallback
     app.secret_key = app.config.get("SECRET_KEY", "supersecretkey123")
 
     # ==========================================
@@ -28,12 +27,12 @@ def create_app():
     login_manager.init_app(app)
 
     # ==========================================
-    # Import Models (important for migrations)
+    # Import Models
     # ==========================================
     from app import models
 
     # ==========================================
-    # 🔥 LANDING PAGE ROUTE
+    # 🏠 HOME ROUTE
     # ==========================================
     @app.route("/")
     def home():
@@ -68,9 +67,10 @@ def create_app():
     app.register_blueprint(pdf_bp)
 
     # ==========================================
-    # 🤖 CHATBOT (keep after core routes)
+    # 🤖 CHATBOT ROUTES
     # ==========================================
-    app.register_blueprint(chatbot_bp)
+    # 👉 FINAL ENDPOINT: /chatbot/chat
+    app.register_blueprint(chatbot_bp, url_prefix="/chatbot")
 
     # ==========================================
     # 🧪 DEBUG ROUTE
