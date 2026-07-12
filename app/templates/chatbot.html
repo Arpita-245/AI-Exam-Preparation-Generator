@@ -1,88 +1,151 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>AI Chatbot</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f5f5;
+        }
 
-<title>AI Chatbot</title>
+        #chat-box {
+            width: 60%;
+            margin: auto;
+            height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background: white;
+        }
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        .user {
+            text-align: right;
+            margin: 10px;
+            color: blue;
+        }
 
-<style>
+        .bot {
+            text-align: left;
+            margin: 10px;
+            color: green;
+        }
 
-.chat-box{
-    height:400px;
-    overflow-y:auto;
-    border:1px solid #ddd;
-    padding:10px;
-    border-radius:10px;
-    background:white;
-}
+        #input-area {
+            width: 60%;
+            margin: auto;
+            display: flex;
+            margin-top: 10px;
+        }
 
-.user{
-    text-align:right;
-    color:blue;
-    margin:5px;
-}
+        input[type="text"] {
+            flex: 1;
+            padding: 10px;
+        }
 
-.bot{
-    text-align:left;
-    color:green;
-    margin:5px;
-}
+        button {
+            padding: 10px;
+            margin-left: 5px;
+        }
 
-</style>
-
+        #upload-area {
+            width: 60%;
+            margin: 20px auto;
+            text-align: center;
+        }
+    </style>
 </head>
 
-<body class="container mt-4">
+<body>
 
-<h3>🤖 AI Study Assistant</h3>
+<h2 style="text-align:center;">AI Study Assistant</h2>
 
-<div class="chat-box mb-3" id="chatBox"></div>
+<!-- ✅ PDF Upload Section -->
+<div id="upload-area">
+    <input type="file" id="pdfFile">
+    <button onclick="uploadPDF()">Upload PDF</button>
+</div>
 
-<input type="text" id="message" class="form-control mb-2" placeholder="Ask something..." onkeypress="handleEnter(event)">
+<!-- ✅ Chat Box -->
+<div id="chat-box"></div>
 
-<button onclick="sendMessage()" class="btn btn-primary">Send</button>
+<!-- ✅ Input Area -->
+<div id="input-area">
+    <input type="text" id="message" placeholder="Ask something from your notes...">
+    <button onclick="sendMessage()">Send</button>
+</div>
 
 <script>
+// ==========================================
+// 📄 Upload PDF Function (FIXED)
+// ==========================================
+async function uploadPDF() {
+    let fileInput = document.getElementById("pdfFile");
+    let file = fileInput.files[0];
 
-function sendMessage(){
+    if (!file) {
+        alert("Select a PDF first");
+        return;
+    }
 
-    let msg = document.getElementById("message").value.trim();
+    let formData = new FormData();
 
-    if(msg === "") return;
+    // ✅ FIX HERE (IMPORTANT)
+    formData.append("pdf", file);
 
-    let chatBox = document.getElementById("chatBox");
-
-    // Show user message
-    chatBox.innerHTML += `<div class="user">${msg}</div>`;
-
-    // Auto scroll
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-    fetch("/chat",{
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({message:msg})
-    })
-    .then(res=>res.json())
-    .then(data=>{
-        chatBox.innerHTML += `<div class="bot">${data.reply || data.error}</div>`;
-        chatBox.scrollTop = chatBox.scrollHeight;
-    })
-    .catch(err=>{
-        chatBox.innerHTML += `<div class="bot">Error: ${err}</div>`;
+    let response = await fetch("/upload-pdf", {
+        method: "POST",
+        body: formData
     });
 
-    document.getElementById("message").value="";
-}
+    let data = await response.json();
 
-// Enter key support
-function handleEnter(event){
-    if(event.key === "Enter"){
-        sendMessage();
+    if (data.message) {
+        alert("✅ PDF uploaded successfully! Now ask questions.");
+    } else {
+        alert("❌ " + data.error);
     }
 }
 
+
+// ==========================================
+// 💬 Send Chat Message
+// ==========================================
+async function sendMessage() {
+    let input = document.getElementById("message");
+    let chatBox = document.getElementById("chat-box");
+
+    let message = input.value;
+
+    if (!message) return;
+
+    chatBox.innerHTML += `<div class="user">You: ${message}</div>`;
+    chatBox.innerHTML += `<div class="bot" id="typing">Typing...</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    input.value = "";
+
+    try {
+        let response = await fetch("/chat", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ message: message })
+        });
+
+        let data = await response.json();
+
+        document.getElementById("typing").remove();
+
+        chatBox.innerHTML += `<div class="bot">AI: ${data.reply}</div>`;
+
+    } catch (error) {
+        document.getElementById("typing").remove();
+        chatBox.innerHTML += `<div class="bot">❌ Error connecting to server</div>`;
+    }
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
 </script>
 
 </body>

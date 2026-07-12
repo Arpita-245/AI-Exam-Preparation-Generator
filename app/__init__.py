@@ -10,9 +10,15 @@ def create_app():
     app = Flask(__name__)
 
     # ==========================================
-    # Load Configuration
+    # Load Configuration FIRST
     # ==========================================
     app.config.from_object(Config)
+
+    # ==========================================
+    # 🔐 SECRET KEY (REQUIRED FOR SESSION)
+    # ==========================================
+    # Use config value if exists, else fallback
+    app.secret_key = app.config.get("SECRET_KEY", "supersecretkey123")
 
     # ==========================================
     # Initialize Extensions
@@ -61,14 +67,16 @@ def create_app():
     app.register_blueprint(recommendation_bp)
     app.register_blueprint(pdf_bp)
 
-    # ✅ CHATBOT (make sure it's LAST or after core routes)
+    # ==========================================
+    # 🤖 CHATBOT (keep after core routes)
+    # ==========================================
     app.register_blueprint(chatbot_bp)
 
     # ==========================================
-    # Optional: Debug route to test chatbot quickly
+    # 🧪 DEBUG ROUTE
     # ==========================================
     @app.route("/test-chat")
     def test_chat():
-        return "Chatbot route is working!"
+        return "✅ Chatbot route is working!"
 
     return app
