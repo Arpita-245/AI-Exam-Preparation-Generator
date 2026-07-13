@@ -1,51 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Attempt Quiz</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <style>
+
+        body{
+            background:#f5f7fa;
+        }
+
+        .container{
+            max-width:900px;
+            margin-top:40px;
+            margin-bottom:40px;
+        }
+
+        .card{
+            border:none;
+            border-radius:12px;
+            box-shadow:0 4px 12px rgba(0,0,0,.08);
+            margin-bottom:25px;
+            padding:25px;
+        }
+
+        .question{
+            font-size:18px;
+            font-weight:bold;
+            color:#0d6efd;
+        }
+
+        .form-check{
+            margin-top:10px;
+        }
+
+    </style>
+
 </head>
 
 <body>
 
-<h2>📝 Attempt Quiz</h2>
+{% include "navbar.html" %}
 
-<form method="POST"
-      action="{{ url_for('exam.submit_quiz', note_id=note.id) }}">
+<div class="container">
 
-{% for q in questions %}
+    <h2 class="mb-4">
+        📝 Attempt Quiz
+    </h2>
 
-{% set question_no = loop.index %}
+    <p class="text-muted">
+        <strong>File:</strong>
+        {{ note.original_filename }}
+    </p>
 
-<hr>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
 
-<h3>{{ q.question }}</h3>
+                <div class="alert alert-{{ category }}">
+                    {{ message }}
+                </div>
 
-{% for option in q.options %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
-<label>
+    <form
+        method="POST"
+        action="{{ url_for('quiz.submit_quiz', note_id=note.id) }}">
 
-<input
-    type="radio"
-    name="q{{ question_no }}"
-    value="{{ option[0] }}">
+        {% for q in quiz %}
 
-{{ option }}
+        {% set question_index = loop.index0 %}
 
-</label>
+        <div class="card">
 
-<br>
+            <div class="question">
+                Q{{ loop.index }}. {{ q.question }}
+            </div>
 
-{% endfor %}
+            <hr>
 
-{% endfor %}
+            {% for option in q.options %}
 
-<br>
+            <div class="form-check">
 
-<button type="submit">
-    Submit Quiz
-</button>
+                <input
+                    class="form-check-input"
+                    type="radio"
+                    name="q{{ question_index }}"
+                    value="{{ option }}"
+                    id="q{{ question_index }}_{{ loop.index0 }}"
+                    required>
 
-</form>
+                <label
+                    class="form-check-label"
+                    for="q{{ question_index }}_{{ loop.index0 }}">
+
+                    {{ option }}
+
+                </label>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% endfor %}
+
+        <button
+            type="submit"
+            class="btn btn-success btn-lg w-100">
+
+            ✅ Submit Quiz
+
+        </button>
+
+    </form>
+
+    <div class="text-center mt-4">
+
+        <a
+            href="{{ url_for('notes.notes') }}"
+            class="btn btn-secondary">
+
+            📚 Back to My Notes
+
+        </a>
+
+    </div>
+
+</div>
 
 </body>
 

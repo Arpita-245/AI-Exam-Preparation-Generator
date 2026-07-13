@@ -3,123 +3,206 @@
 
 <head>
 
-<meta charset="UTF-8">
-<title>Quiz Results</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- ✅ Bootstrap -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Quiz Results</title>
 
-<style>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-body{
-    background:#f5f7fa;
-}
+    <style>
 
-.card{
-    border:none;
-    border-radius:12px;
-    box-shadow:0px 4px 15px rgba(0,0,0,.08);
-}
+        body{
+            background:#f5f7fa;
+        }
 
-.table thead{
-    background:#007BFF;
-    color:white;
-}
+        .card{
+            border:none;
+            border-radius:12px;
+            box-shadow:0 4px 15px rgba(0,0,0,.08);
+        }
 
-</style>
+        .table thead{
+            background:#0d6efd;
+            color:white;
+        }
+
+    </style>
 
 </head>
 
 <body>
 
-<!-- ✅ REUSABLE NAVBAR -->
 {% include "navbar.html" %}
 
 <div class="container mt-4">
 
-<h3>📊 My Quiz Results</h3>
+    <div class="d-flex justify-content-between align-items-center">
 
-{% if results %}
+        <h2>📊 My Quiz Results</h2>
 
-<div class="card p-3 mt-3">
+        <a href="{{ url_for('dashboard.dashboard') }}"
+           class="btn btn-secondary">
+            🏠 Dashboard
+        </a>
 
-<div class="table-responsive">
+    </div>
 
-<table class="table table-hover align-middle">
+    <hr>
 
-<thead>
-<tr>
-    <th>Study Material</th>
-    <th>Score</th>
-    <th>Percentage</th>
-    <th>Attempt Date</th>
-    <th>Report</th>
-</tr>
-</thead>
+    <!-- Flash Messages -->
 
-<tbody>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category,message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show">
 
-{% for result in results %}
+                    {{ message }}
 
-<tr>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                    </button>
 
-<td>
-    {{ result.study_material.original_filename }}
-</td>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
-<td>
-    {{ result.score }}/{{ result.total_questions }}
-</td>
+    {% if results %}
 
-<td>
-    {{ result.percentage }}%
-</td>
+    <div class="card p-3 mt-3">
 
-<td>
-    {{ result.attempted_on.strftime("%d-%m-%Y %H:%M") }}
-</td>
+        <div class="table-responsive">
 
-<td>
-    <a href="{{ url_for('pdf.download_result', result_id=result.id) }}"
-       class="btn btn-success btn-sm">
-       📥 PDF
-    </a>
-</td>
+            <table class="table table-hover align-middle">
 
-</tr>
+                <thead>
 
-{% endfor %}
+                    <tr>
 
-</tbody>
+                        <th>#</th>
 
-</table>
+                        <th>Study Material</th>
+
+                        <th>Score</th>
+
+                        <th>Total Questions</th>
+
+                        <th>Percentage</th>
+
+                        <th>Status</th>
+
+                        <th>Date</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for result in results %}
+
+                <tr>
+
+                    <td>{{ loop.index }}</td>
+
+                    <td>
+                        {% if result.study_material %}
+                            {{ result.study_material.original_filename }}
+                        {% else %}
+                            Deleted File
+                        {% endif %}
+                    </td>
+
+                    <td>{{ result.score }}</td>
+
+                    <td>{{ result.total_questions }}</td>
+
+                    <td>{{ "%.2f"|format(result.percentage) }}%</td>
+
+                    <td>
+
+                        {% if result.percentage >= 50 %}
+
+                            <span class="badge bg-success">
+                                Pass
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-danger">
+                                Fail
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>
+
+                        {% if result.attempted_on %}
+                            {{ result.attempted_on.strftime("%d-%m-%Y %I:%M %p") }}
+                        {% else %}
+                            -
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <div class="alert alert-info mt-4 text-center">
+
+        <h5>No quiz results available.</h5>
+
+        <p>
+            Generate a quiz from your notes and attempt it to see your results.
+        </p>
+
+        <a href="{{ url_for('notes.notes') }}"
+           class="btn btn-primary">
+            📚 My Notes
+        </a>
+
+    </div>
+
+    {% endif %}
+
+    <div class="mt-4">
+
+        <a href="{{ url_for('notes.notes') }}"
+           class="btn btn-primary">
+
+            📚 My Notes
+
+        </a>
+
+        <a href="{{ url_for('dashboard.dashboard') }}"
+           class="btn btn-secondary">
+
+            🏠 Dashboard
+
+        </a>
+
+    </div>
 
 </div>
 
-</div>
-
-{% else %}
-
-<div class="alert alert-danger text-center mt-4">
-    No Quiz Attempts Yet.
-</div>
-
-{% endif %}
-
-<!-- BUTTONS -->
-<div class="mt-4">
-
-<a href="{{ url_for('notes.my_notes') }}" class="btn btn-primary">
-📚 My Notes
-</a>
-
-<a href="{{ url_for('dashboard.dashboard') }}" class="btn btn-secondary">
-🏠 Dashboard
-</a>
-
-</div>
-
-</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

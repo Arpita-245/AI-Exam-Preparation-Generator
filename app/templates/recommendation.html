@@ -3,128 +3,117 @@
 
 <head>
 
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Study Recommendation</title>
+    <title>Study Recommendation</title>
 
-<style>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-body{
+    <style>
 
-    font-family:Arial, Helvetica, sans-serif;
-    background:#f4f6f9;
-    margin:40px;
+        body{
+            background:#f5f7fa;
+        }
 
-}
+        .card{
+            border:none;
+            border-radius:12px;
+            box-shadow:0 4px 15px rgba(0,0,0,.08);
+        }
 
-.container{
+        .recommendation-box{
+            white-space:pre-wrap;
+            line-height:1.8;
+            font-size:15px;
+        }
 
-    max-width:900px;
-    margin:auto;
-    background:white;
-    padding:30px;
-    border-radius:10px;
-    box-shadow:0 4px 12px rgba(0,0,0,.15);
-
-}
-
-h1{
-
-    text-align:center;
-    color:#2c3e50;
-
-}
-
-.box{
-
-    margin-top:20px;
-    background:#f8f9fa;
-    padding:20px;
-    border-left:5px solid #28a745;
-    white-space:pre-wrap;
-    line-height:1.8;
-    border-radius:8px;
-
-}
-
-.buttons{
-
-    margin-top:30px;
-    text-align:center;
-
-}
-
-.buttons a{
-
-    display:inline-block;
-    margin:10px;
-    padding:12px 22px;
-    border-radius:8px;
-    text-decoration:none;
-    color:white;
-    font-weight:bold;
-
-}
-
-.pdf{
-    background:#28a745;
-}
-
-.notes{
-    background:#007BFF;
-}
-
-.dashboard{
-    background:#6c757d;
-}
-
-</style>
+    </style>
 
 </head>
 
 <body>
 
-<div class="container">
+<!-- Navbar -->
+{% include "navbar.html" %}
 
-<h1>🤖 AI Study Recommendation</h1>
+<div class="container mt-4">
 
-<hr>
+    <h3>🤖 AI Study Recommendation</h3>
 
-<h2>📄 {{ note.original_filename }}</h2>
+    <p class="text-muted">
+        📄 {{ note.original_filename }}
+    </p>
 
-<div class="box">
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category,message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show">
 
-{{ note.recommendation }}
+                    {{ message }}
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="alert">
+                    </button>
+
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Recommendation Card -->
+    <div class="card p-4 mt-3">
+
+        <div class="recommendation-box">
+
+            {% if note.recommendation %}
+                {{ note.recommendation }}
+            {% else %}
+                <span class="text-muted">
+                    No recommendation available.
+                </span>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- Buttons -->
+    <div class="mt-4 d-flex flex-wrap gap-2">
+
+        <a
+            href="{{ url_for('pdf.download_recommendation', note_id=note.id) }}"
+            class="btn btn-success">
+
+            📥 Download PDF
+
+        </a>
+
+        <a
+            href="{{ url_for('notes.notes') }}"
+            class="btn btn-primary">
+
+            📚 My Notes
+
+        </a>
+
+        <a
+            href="{{ url_for('dashboard.dashboard') }}"
+            class="btn btn-secondary">
+
+            🏠 Dashboard
+
+        </a>
+
+    </div>
 
 </div>
 
-<div class="buttons">
-
-<a class="pdf"
-href="{{ url_for('pdf.download_recommendation', note_id=note.id) }}">
-
-📥 Download PDF
-
-</a>
-
-<a class="notes"
-href="{{ url_for('notes.my_notes') }}">
-
-📚 My Notes
-
-</a>
-
-<a class="dashboard"
-href="{{ url_for('dashboard.dashboard') }}">
-
-🏠 Dashboard
-
-</a>
-
-</div>
-
-</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-
 </html>

@@ -5,25 +5,40 @@ class SummaryService:
 
     @staticmethod
     def generate_summary(text):
+        """
+        Generate an AI summary from extracted text.
+        """
+
+        if not text:
+            return "No text available."
+
+        text = text[:6000]
 
         prompt = f"""
-You are an AI Tutor.
+You are an expert AI tutor.
 
-Read the following study material carefully.
+Generate a concise study summary.
 
-Generate a clear, well-structured summary in simple language.
-
-The summary should:
-- Cover all important concepts.
-- Use bullet points wherever possible.
-- Be easy for students to revise.
-- Avoid unnecessary details.
+Instructions:
+- Use headings.
+- Use bullet points.
+- Cover important concepts.
+- Keep it easy to revise.
 
 Study Material:
 
 {text}
 """
 
-        groq = GroqService()
+        try:
+            groq = GroqService()
+            response = groq.ask_ai(prompt)
 
-        return groq.ask_ai(prompt)
+            if response:
+                return response.strip()
+
+            return "Unable to generate summary."
+
+        except Exception as e:
+            print("Summary Error:", e)
+            return None

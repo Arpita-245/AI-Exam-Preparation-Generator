@@ -1,116 +1,139 @@
-import matplotlib
-matplotlib.use('Agg')
-
-from flask import Blueprint, render_template
-from flask_login import login_required, current_user
-
-from app.models import StudyMaterial, QuizResult
-from sqlalchemy import func
-
-import matplotlib.pyplot as plt
 import os
 from datetime import datetime
+
+import matplotlib
+matplotlib.use("Agg")
+
+import matplotlib.pyplot as plt
+
+from flask import Blueprint, render_template, flash
+from flask_login import login_required, current_user
+
+from sqlalchemy import func
+
+from app.models import StudyMaterial, QuizResult
 
 dashboard_bp = Blueprint("dashboard", __name__)
 
 
-# ======================================
-# 📊 DASHBOARD ROUTE
-# ======================================
+# ==================================================
+# Dashboard
+# ==================================================
 @dashboard_bp.route("/dashboard")
 @login_required
 def dashboard():
 
-    # ======================================
-    # Notes Statistics
-    # ======================================
-    total_notes = StudyMaterial.query.filter_by(
-        user_id=current_user.id
-    ).count()
+    try:
 
-    # ======================================
-    # Quiz Statistics
-    # ======================================
-    total_quizzes = QuizResult.query.filter_by(
-        user_id=current_user.id
-    ).count()
+        # ------------------------------------------
+        # Notes Statistics
+        # ------------------------------------------
+        total_notes = StudyMaterial.query.filter_by(
+            user_id=current_user.id
+        ).count()
 
-    average_score = (
-        QuizResult.query.with_entities(
-            func.avg(QuizResult.percentage)
+        # ------------------------------------------
+        # Quiz Statistics
+        # ------------------------------------------
+        total_quizzes = QuizResult.query.filter_by(
+            user_id=current_user.id
+        ).count()
+
+        average_score = (
+            QuizResult.query.with_entities(
+                func.avg(QuizResult.percentage)
+            )
+            .filter_by(user_id=current_user.id)
+            .scalar()
         )
-        .filter_by(user_id=current_user.id)
-        .scalar()
-    )
 
-    average_score = round(average_score, 2) if average_score else 0
+        average_score = round(average_score, 2) if average_score else 0
 
-    # ======================================
-    # Highest & Lowest Score
-    # ======================================
-    highest_score = (
-        QuizResult.query.with_entities(
-            func.max(QuizResult.percentage)
+        highest_score = (
+            QuizResult.query.with_entities(
+                func.max(QuizResult.percentage)
+            )
+            .filter_by(user_id=current_user.id)
+            .scalar()
         )
-        .filter_by(user_id=current_user.id)
-        .scalar()
-    ) or 0
 
-    lowest_score = (
-        QuizResult.query.with_entities(
-            func.min(QuizResult.percentage)
+        highest_score = round(highest_score, 2) if highest_score else 0
+
+        lowest_score = (
+            QuizResult.query.with_entities(
+                func.min(QuizResult.percentage)
+            )
+            .filter_by(user_id=current_user.id)
+            .scalar()
         )
-        .filter_by(user_id=current_user.id)
-        .scalar()
-    ) or 0
 
-    # ======================================
-    # Quiz History (for charts)
-    # ======================================
-    quiz_results = (
-        QuizResult.query
-        .filter_by(user_id=current_user.id)
-        .order_by(QuizResult.attempted_on.asc())
-        .all()
-    )
+        lowest_score = round(lowest_score, 2) if lowest_score else 0
 
-    quiz_labels = []
-    quiz_scores = []
+        # ------------------------------------------
+        # Quiz History
+        # ------------------------------------------
+        quiz_results = (
+            QuizResult.query
+            .filter_by(user_id=current_user.id)
+            .order_by(QuizResult.attempted_on.asc())
+            .all()
+        )
 
-    for i, result in enumerate(quiz_results, start=1):
-        quiz_labels.append(f"Quiz {i}")
-        quiz_scores.append(result.percentage)
+        quiz_labels = []
+        quiz_scores = []
 
-    # ======================================
-    # 📊 Generate Chart
-    # ======================================
-    chart_filename = generate_progress_chart(quiz_scores)
+        for index, result in enumerate(quiz_results, start=1):
+            quiz_labels.append(f"Quiz {index}")
+            quiz_scores.append(result.percentage)
 
-    # ======================================
-    # Dashboard Data
-    # ======================================
-    stats = {
-        "notes": total_notes,
-        "quizzes": total_quizzes,
-        "average": average_score,
-        "subjects": total_notes,
-        "highest": highest_score,
-        "lowest": lowest_score
-    }
+        # ------------------------------------------
+        # Generate Performance Chart
+        # ------------------------------------------
+        chart_filename = generate_progress_chart(quiz_scores)
 
-    return render_template(
-        "dashboard.html",
-        user=current_user,
-        stats=stats,
-        quiz_labels=quiz_labels,
-        quiz_scores=quiz_scores,
-        chart_file=chart_filename  # 🔥 send chart to frontend
-    )
+        stats = {
+            "notes": total_notes,
+            "quizzes": total_quizzes,
+            "average": average_score,
+            "highest": highest_score,
+            "lowest": lowest_score,
+            "subjects": total_notes
+        }
+
+        return render_template(
+            "dashboard.html",
+            user=current_user,
+            stats=stats,
+            quiz_labels=quiz_labels,
+            quiz_scores=quiz_scores,
+            chart_file=chart_filename
+        )
+
+    except Exception as e:
+        print("DASHBOARD ERROR:", e)
+
+        flash(f"Dashboard Error: {str(e)}", "danger")
+
+        return render_template(
+            "dashboard.html",
+            user=current_user,
+            stats={
+                "notes": 0,
+                "quizzes": 0,
+                "average": 0,
+                "highest": 0,
+                "lowest": 0,
+                "subjects": 0
+            },
+            quiz_labels=[],
+            quiz_scores=[],
+            chart_file=""
+        )
 
 
-# ======================================
-# 📈 MATPLOTLIB GRAPH FUNCTION
-# ======================================
+# ==================================================
+# Generate Progress Chart
+# ==================================================
 def generate_progress_chart(scores):
 
     if not scores:
@@ -118,40 +141,40 @@ def generate_progress_chart(scores):
 
     attempts = list(range(1, len(scores) + 1))
 
-    # 🔥 Modern styling
     plt.figure(figsize=(8, 4))
-    plt.plot(attempts, scores, marker='o', linewidth=2)
+    plt.plot(attempts, scores, marker="o", linewidth=2)
 
     plt.xlabel("Attempt")
     plt.ylabel("Score (%)")
     plt.title("Performance Over Time")
     plt.grid(True)
 
-    # Ensure static folder exists
-    static_path = os.path.join("app", "static", "charts")
-    os.makedirs(static_path, exist_ok=True)
+    chart_folder = os.path.join("app", "static", "charts")
+    os.makedirs(chart_folder, exist_ok=True)
 
-    # 🔥 Unique filename (VERY IMPORTANT)
     filename = f"chart_{datetime.now().strftime('%Y%m%d%H%M%S')}.png"
-    file_path = os.path.join(static_path, filename)
 
-    plt.savefig(file_path, bbox_inches='tight')
+    filepath = os.path.join(chart_folder, filename)
+
+    plt.savefig(filepath, bbox_inches="tight")
     plt.close()
 
-    return f"charts/{filename}"  # 🔥 return relative path
+    return f"charts/{filename}"
 
 
-# ======================================
-# 🔁 OPTIONAL ROUTE (Manual Graph Trigger)
-# ======================================
+# ==================================================
+# Manual Chart Route
+# ==================================================
 @dashboard_bp.route("/progress-chart")
 @login_required
 def progress_chart():
 
-    results = QuizResult.query.filter_by(user_id=current_user.id).all()
+    results = QuizResult.query.filter_by(
+        user_id=current_user.id
+    ).all()
 
     scores = [r.percentage for r in results]
 
-    chart_file = generate_progress_chart(scores)
+    chart = generate_progress_chart(scores)
 
-    return f"Chart Generated Successfully: {chart_file}"
+    return f"Chart generated successfully: {chart}"
